@@ -1,4 +1,3 @@
-
 import numberFormatter from "@/utils/numberFormatter";
 import {
   Table,
@@ -17,7 +16,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { redirect } from "next/navigation";
 
 const MarketLogsDashboard = ({
@@ -27,39 +26,23 @@ const MarketLogsDashboard = ({
   marketLogsData,
   currency,
   columnItems,
-  
-}: // userLoans,
-{
+  category
+}: {
   width: string;
   currentPagination: any;
   setCurrentPagination: any;
   marketLogsData: any;
   currency: any;
   columnItems: any;
-
-  // columnItems: Array<Array<string>>;
-  // gap: string;
-  // rowItems: any;
+  category:any;
 }) => {
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   const [loading, setLoading] = useState<boolean>(false);
   const [currentSelectedTenure, setcurrentSelectedTenure] = useState("Day");
-  const tooltips = [
-    "",
-    "",
-    "CURRENT_PRICE",
+  const tooltips = ["", "", "CURRENT_PRICE", "PRICE CHANGE [24H]", "MARKETCAP"];
 
-    "PRICE CHANGE [24H]",
-    "MARKETCAP",
-  ];
-
-const routerr = useRouter();
-
-//   const handleRowClick = (row) => {
-//   const url = `/v1/coin/${(row)}`; // dynamic URL based on row data
-//   router.push(url);
-// };
+  const routerr = useRouter();
 
   return loading ? (
     <>
@@ -84,17 +67,6 @@ const routerr = useRouter();
           color="#010409"
           size="xl"
         />
-        {/* <YourBorrowModal
-                    buttonText="Borrow assets"
-                    variant="link"
-                    fontSize="16px"
-                    fontWeight="400"
-                    display="inline"
-                    color="#0969DA"
-                    cursor="pointer"
-                    ml="0.4rem"
-                    lineHeight="24px"
-                  /> */}
       </Box>
     </>
   ) : (
@@ -105,6 +77,7 @@ const routerr = useRouter();
         color="white"
         borderRadius="md"
         w={width}
+        minHeight={"89vh"}
         display="flex"
         justifyContent="flex-center"
         alignItems="flex-center"
@@ -116,26 +89,16 @@ const routerr = useRouter();
         overflowX="hidden"
       >
         {marketLogsData.length != 0 ? (
-          <Table
-            variant="unstyled"
-            width="100%"
-            // bgColor={"blue"}
-            // p={0}
-          >
+          <Table variant="unstyled" width="100%">
             <Thead width={"100%"} height={"5rem"}>
               <Tr width={"100%"} height="2rem">
                 {columnItems.map((val: any, idx1: any) => (
                   <Td
                     key={idx1}
                     width={"16.6%"}
-              
-                    // maxWidth={`${gap[idx1][idx2]}%`}
                     fontSize={"12px"}
                     fontWeight={400}
-                    // textAlign={"left"}
                     p={0}
-                    // bgColor={"pink"}
-                    // border="1px solid red"
                   >
                     <Text
                       fontFamily={"Inter"}
@@ -159,7 +122,6 @@ const routerr = useRouter();
                       <Tooltip
                         hasArrow
                         label={tooltips[idx1]}
-                        // arrowPadding={-5420}
                         placement={
                           (idx1 === 0 && "bottom-start") ||
                           (idx1 === columnItems.length - 1 && "bottom-end") ||
@@ -176,10 +138,6 @@ const routerr = useRouter();
                         border="1px solid"
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
-                        // cursor="context-menu"
-                        // marginRight={idx1 === 1 ? "52px" : ""}
-                        // maxW="222px"
-                        // mt="28px"
                       >
                         {val}
                       </Tooltip>
@@ -188,39 +146,23 @@ const routerr = useRouter();
                 ))}
               </Tr>
             </Thead>
-            <Tbody
-              position="relative"
-              overflowX="hidden"
-              //   alignContent={"center"}
-              //   display="flex"
-              //   flexDirection="column"
-              //   gap={"1rem"}
-            >
+            <Tbody position="relative" overflowX="hidden">
               {marketLogsData
                 ?.slice(lower_bound, upper_bound + 1)
                 .map((market: any, idx: any) => {
-                  ////console.log("faisal coin check", coin);
-                  // borrowIDCoinMap.push([coin.id, coin?.name]);
                   return (
-          <>
-
-
+                    <>
                       <Tr
-                    cursor={"pointer"}
-                    _hover={{   bg:"var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                    }}
-                            onClick={()=>window.location.replace(`/v1/coin/${market.id}`)}
-                            
-                    //    onClick={() => {
-
-                    //   }}
-                    
+                        cursor={"pointer"}
+                        _hover={{
+                          bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
+                        }}
+                        onClick={() =>
+                         category=="0" && window.location.replace(`/v1/coin/${market.id}`)
+                        }
                         key={lower_bound + idx}
                         width={"100%"}
                         height="5rem"
-                        // height={"5rem"}
-                        // bgColor="green"
-                        // borderBottom="1px solid #2b2f35"
                         position="relative"
                         p={0}
                       >
@@ -239,23 +181,21 @@ const routerr = useRouter();
                             alignItems="flex-start"
                             justifyContent="flex-start"
                             fontWeight="400"
-                            // bgColor={"blue"}
                           >
-                            {/* {checkGap(idx1, idx2)} */}
                             <Text
                               fontSize="14px"
                               fontWeight="500"
                               fontStyle="normal"
                               fontFamily="Inter"
                             >
-                              {market.name}
+                              {category=="0"?market.name:category=="1"?market?.item?.name:category=="2"?market?.name:category=="3"?market?.name:"" }
+                              {/* {category=='0'?market.name:category=='1'?market.coins} */}
                             </Text>
                           </Box>
                         </Td>
 
-                        <Td
+                    {category!="3"&&    <Td
                           width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
                           fontSize={"14px"}
                           fontWeight={400}
                           padding={2}
@@ -266,11 +206,12 @@ const routerr = useRouter();
                             display="flex"
                             justifyContent="flex-center"
                             alignItems="center"
-                            // bgColor="red"
                           >
                             <Box height="2rem" width="2rem">
                               <Image
-                                src={market.image}
+                              src={category=="0"?market.image:category=="1"?market?.item?.thumb:category=="2"?market?.thumb:"#"}
+
+                                // src={market.image}
                                 alt={`Picture of the coin that I want to access ${market.name}`}
                                 width="32"
                                 height="32"
@@ -282,7 +223,6 @@ const routerr = useRouter();
                               justifyContent="space-between"
                               alignItems="flex-start"
                               gap="1px"
-                              //   bgColor="blue"
                               pt="3px"
                             >
                               <Text
@@ -291,37 +231,60 @@ const routerr = useRouter();
                                 fontStyle="normal"
                                 fontFamily="Inter"
                               >
-                                {market.symbol.toUpperCase()}
+                              {category=="0"?market.symbol.toUpperCase():category=="1"?market?.item?.symbol.toUpperCase():category=="2"?market?.symbol:"" }
+
                               </Text>
                             </Box>
                           </HStack>
                         </Td>
+}
+                        <Td
+                          width={"16.6%"}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="center"
+                        >
+                          <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            fontWeight="400"
+                            fontSize="14px"
+                            color="#E6EDF3"
+                          >
+                            {category!="1" && "$"} 
+                            {category=="0"?market.current_price:category=="1"?market?.item?.data?.price_btc:category=="2"?market?.floor_price_in_native_currency:market?.data?.total_volume }
+                            {category=="1"?"BTC":category=="2"?market?.native_currency_symbol:""}
+                            {/* {market.current_price} */}
+                          </Text>
+                        </Td>
+                        <Td
+                          width={"16.6%"}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="center"
+                        >
+                          <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            fontWeight="400"
+                            fontSize="14px"
+                            color="#E6EDF3"
+                          >
+                              {category=="0"?market.market_cap:category=="1"?market?.data?.h24_average_sale_price:category=="2"?market?.item?.name:category=="3"?market?.item?.name:market?.item?.data?.market_cap }
 
-                        <Td
-                          width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="center"
-                        >
-                          <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                            // bgColor={"blue"}
-                          >
-                            $ {market.current_price}
+                            {/* {numberFormatter(market.market_cap)} */}
                           </Text>
                         </Td>
-                        <Td
+                        {/* <Td
                           width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
                           fontSize={"14px"}
                           fontWeight={400}
                           padding={2}
@@ -338,34 +301,13 @@ const routerr = useRouter();
                             color="#E6EDF3"
                             // bgColor={"blue"}
                           >
-                            {numberFormatter(market.market_cap)}
-                          </Text>
-                        </Td>
-                        <Td
-                          width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="center"
-                        >
-                          <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                            // bgColor={"blue"}
-                          >
+                              {category=="0"?market.name:category=="1"?market?.item?.name:category=="2"?market?.item?.name:category=="3"?market?.item?.name:market?.item?.name }
+
                             {numberFormatter(market.current_price)}
                           </Text>
-                        </Td>
-                        <Td
+                        </Td> */}
+                        {/* <Td
                           width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
                           fontSize={"14px"}
                           fontWeight={400}
                           padding={2}
@@ -380,11 +322,10 @@ const routerr = useRouter();
                             fontWeight="400"
                             fontSize="14px"
                             color="#E6EDF3"
-                            // bgColor={"blue"}
                           >
                             {numberFormatter(market.price_change_24h)}
                           </Text>
-                        </Td>
+                        </Td> */}
                       </Tr>
                       <Tr
                         style={{
@@ -393,15 +334,12 @@ const routerr = useRouter();
                           borderWidth: "0",
                           backgroundColor: "#2b2f35",
                           width: "100%",
-                          // left: "0%",
                           display: `${
                             idx == marketLogsData.length - 1 ? "none" : "block"
                           }`,
                         }}
                       />
-
                     </>
-
                   );
                 })}
             </Tbody>

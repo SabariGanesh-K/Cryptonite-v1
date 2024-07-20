@@ -1,31 +1,27 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Skeleton, Text } from "@chakra-ui/react";
 
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
-  selectAllBTCData,
-  selectAllDAIData,
-  selectAllETHData,
-  selectAllUSDCData,
-  selectAllUSDTData,
-  selectDailyBTCData,
-  selectDailyDAIData,
-  selectDailyETHData,
-  selectDailyUSDCData,
-  selectDailyUSDTData,
-  selectHourlyBTCData,
-  selectHourlyDAIData,
-  selectHourlyETHData,
-  selectHourlyUSDCData,
-  selectHourlyUSDTData,
-  selectMonthlyBTCData,
-  selectMonthlyDAIData,
-  selectMonthlyETHData,
-  selectMonthlyUSDCData,
-  selectMonthlyUSDTData,
+  selectBNBData,
+  selectBTCData,
+  selectETHData,
+  selectSolanaData,
+  selectTop50Data,
+  selectUSDTData,
+  setBNBData,
+  setBTCcompanyHoldingsData,
+  setBTCData,
+  setETHCompanyHoldingsData,
+  setETHData,
+  setSolanaData,
+  setTop50Data,
+  setTrendingData,
+  setUSDTData,
 } from "@/store/slices/readDataSlice";
 
 import BTCLogo from "@/assets/icons/coins/btc";
@@ -44,8 +40,13 @@ import DaiDisabled from "@/assets/icons/coins/daiDisabled";
 import BtcDisabled from "@/assets/icons/coins/btcDisabled";
 import MarketListTracker from "../modules/MarketListTracker";
 import { useRouter } from "next/router";
+import { VscGraphLine } from "react-icons/vsc";
+import { HiTrendingUp } from "react-icons/hi";
+import { FaHotjar } from "react-icons/fa6";
+import { FaFire, FaSearch } from "react-icons/fa";
+import { FiRefreshCcw } from "react-icons/fi";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
-const MarketMetrics = ({ router,color, curveColor, series }: any) => {
+const MarketMetrics = ({ router, color, curveColor, series }: any) => {
   // const router = useRouter()
   const [aprByMarket, setAPRByMarket] = useState(0);
   const [chartData, setChartData] = useState([
@@ -70,639 +71,36 @@ const MarketMetrics = ({ router,color, curveColor, series }: any) => {
       data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
     },
   ]);
+  const btcdata = useSelector(selectBTCData);
+  const ethdata = useSelector(selectETHData);
+  const soldata = useSelector(selectSolanaData);
+  const bnbdata = useSelector(selectBNBData);
+  const usdtddata = useSelector(selectUSDTData);
 
-  const btcData = useSelector(selectHourlyBTCData);
-  const ethData = useSelector(selectHourlyETHData);
-  const usdtData = useSelector(selectHourlyUSDTData);
-  const usdcData = useSelector(selectHourlyUSDCData);
-  const daiData = useSelector(selectHourlyDAIData);
-  const weeklyBtcData = useSelector(selectDailyBTCData);
-  const weeklyEthData = useSelector(selectDailyETHData);
-  const weeklyUsdtData = useSelector(selectDailyUSDTData);
-  const weeklyUsdcData = useSelector(selectDailyUSDCData);
-  const weeklyDaiData = useSelector(selectDailyDAIData);
-  const monthlyBtcData = useSelector(selectMonthlyBTCData);
-  const monthlyEthData = useSelector(selectMonthlyETHData);
-  const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
-  const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
-  const monthlyDaiData = useSelector(selectMonthlyDAIData);
-  const allBtcData = useSelector(selectAllBTCData);
-  const allEthData = useSelector(selectAllETHData);
-  const allUsdtData = useSelector(selectAllUSDTData);
-  const allUsdcData = useSelector(selectAllUSDCData);
-  const allDaiData = useSelector(selectAllDAIData);
-  const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
-  ////console.log(ethData,"usdc data")
-  // useEffect(()=>{
-
-  // },[])
   const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
+  const [currentSelectedTab, setcurrentSelectedTab] = useState<number>(0);
   ////console.log(btcData, "btc")
+  console.log(JSON.stringify(ethdata));
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
-  useEffect(() => {
-    // Fetch data based on selected option
-    const fetchData = async () => {
-      // Simulating API call or data update
-      const { newData, newCategories } = await fetchDataBasedOnOption(
-        aprByMarket,
-        currentSelectedCoin
-      );
-      setChartData(newData);
-      setXAxisCategories(newCategories);
-    };
 
-    fetchData();
-    ////console.log(coinsData[currentSelectedCoin],"coin apr")
-  }, [aprByMarket, currentSelectedCoin]);
-  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
-
-  const fetchDataBasedOnOption = async (option: number, option2: number) => {
-    // Simulating API call or data update based on option
-    // Replace this with your actual implementation
-    let newData: any = [];
-    let newCategories: any = [];
-
-    switch (aprByMarket) {
-      case 0:
-        if (currentSelectedCoin == 0) {
-          btcData?.aprs && btcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply",
-                  data: btcData?.aprs,
-                },
-                // {
-                //   name: "Borrow Apr",
-                //   data: btcData?.apys,
-                // },
-              ])
-            : (newData = [
-                {
-                  name: "Supply Apr",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-                // {
-                //   name: "Borrow Apr",
-                //   data: [
-                //     200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
-                //   ],
-                // },
-              ]);
-          btcData?.dates
-            ? (newCategories = btcData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
-          usdtData?.aprs && usdtData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: usdtData?.aprs,
-                },
-           
-              ])
-            : (newData = [
-                {
-                  name: "Supply Apr",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-               
-              ]);
-          usdtData?.dates
-            ? (newCategories = usdtData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 2) {
-          usdcData?.aprs && usdcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: usdcData?.aprs,
-                },
-           
-              ])
-            : (newData = [
-                {
-                  name: "Supply Apr",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-               
-              ]);
-          usdcData?.dates
-            ? (newCategories = usdcData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 3) {
-          ethData?.aprs && ethData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: ethData?.aprs,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Supply Apr",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-              
-              ]);
-          ethData?.dates
-            ? (newCategories = ethData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-          return { newData, newCategories };
-        } else {
-          daiData?.aprs && daiData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: daiData?.aprs,
-                },
-              
-              ])
-            : (newData = [
-                {
-                  name: "Supply Apr",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-             
-              ]);
-          daiData?.dates
-            ? (newCategories = daiData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-          return { newData, newCategories };
-        }
-        break;
-
-      case 1:
-        if (currentSelectedCoin == 0) {
-          weeklyBtcData?.aprs && weeklyBtcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: weeklyBtcData?.aprs,
-                },
-              
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [300, 400, 350, 500, 490, 600, 800],
-                },
-            
-              ]);
-          weeklyBtcData?.dates
-            ? (newCategories = weeklyBtcData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
-          weeklyUsdtData?.aprs && weeklyUsdtData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: weeklyUsdtData?.aprs,
-                },
-              
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 200, 250, 400, 390, 500, 700],
-                },
-              
-              ]);
-          weeklyUsdtData?.dates
-            ? (newCategories = weeklyUsdtData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 2) {
-          weeklyUsdcData?.aprs && weeklyUsdcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: weeklyUsdcData?.aprs,
-                },
-             
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 200, 250, 400, 390, 500, 700],
-                },
-               
-              ]);
-          weeklyUsdcData?.dates
-            ? (newCategories = weeklyUsdcData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 3) {
-          weeklyEthData?.aprs && weeklyEthData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: weeklyEthData?.aprs,
-                },
-             
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 400, 250, 300, 390, 500, 800],
-                },
-              
-              ]);
-          weeklyEthData?.dates
-            ? (newCategories = weeklyEthData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 4) {
-          weeklyDaiData?.aprs && weeklyDaiData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: weeklyDaiData?.aprs,
-                },
-              
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 400, 250, 300, 390, 500, 800],
-                },
-              
-              ]);
-          weeklyDaiData?.dates
-            ? (newCategories = weeklyDaiData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        }
-        break;
-      case 2:
-        //y data axis
-        if (currentSelectedCoin == 0) {
-          monthlyBtcData?.aprs && monthlyBtcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: monthlyBtcData?.aprs,
-                },
-             
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [300, 400, 350, 500, 490, 600, 800],
-                },
-              
-              ]);
-          monthlyBtcData?.dates
-            ? (newCategories = monthlyBtcData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
-          monthlyUsdtData?.aprs && monthlyUsdtData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: monthlyUsdtData?.aprs,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 200, 250, 400, 390, 500, 700],
-                },
-              ]);
-          monthlyUsdtData?.dates
-            ? (newCategories = monthlyUsdtData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 2) {
-          monthlyUsdcData?.aprs && monthlyUsdcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: monthlyUsdcData?.aprs,
-                },
-               
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 200, 250, 400, 390, 500, 700],
-                },
-               
-              ]);
-          monthlyUsdcData?.dates
-            ? (newCategories = monthlyUsdcData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 3) {
-          monthlyEthData?.aprs && monthlyEthData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: monthlyEthData?.aprs,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 400, 250, 300, 390, 500, 800],
-                },
-              
-              ]);
-          monthlyEthData?.dates
-            ? (newCategories = monthlyEthData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 4) {
-          monthlyDaiData?.aprs && monthlyDaiData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: monthlyDaiData?.aprs,
-                },
-             
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 400, 250, 300, 390, 500, 800],
-                },
-              
-              
-              ]);
-          monthlyDaiData?.dates
-            ? (newCategories = monthlyDaiData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        }
-        break;
-      case 3:
-        if (currentSelectedCoin == 0) {
-          allBtcData?.aprs && allBtcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: allBtcData?.aprs,
-                },
-             
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [300, 400, 350, 500, 490, 600, 800],
-                },
-               
-              ]);
-          allBtcData?.dates
-            ? (newCategories = allBtcData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
-          allUsdtData?.aprs && allUsdtData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: allUsdtData?.aprs,
-                },
-              
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 200, 250, 400, 390, 500, 700],
-                },
-               
-              ]);
-          allUsdtData?.dates
-            ? (newCategories = allUsdtData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 2) {
-          allUsdcData?.aprs && allUsdcData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: allUsdcData?.aprs,
-                },
-               
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 200, 250, 400, 390, 500, 700],
-                },
-              ]);
-          allUsdcData?.dates
-            ? (newCategories = allUsdcData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 3) {
-          allEthData?.aprs && allEthData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: allEthData?.aprs,
-                },
-            
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 400, 250, 300, 390, 500, 800],
-                },
-               
-              ]);
-          allEthData?.dates
-            ? (newCategories = allEthData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 4) {
-          allDaiData?.aprs && allDaiData?.apys
-            ? (newData = [
-                {
-                  name: "Supply Apr",
-                  data: allDaiData?.aprs,
-                },
-             
-              ])
-            : (newData = [
-                {
-                  name: "Supply APR",
-                  data: [100, 400, 250, 300, 390, 500, 800],
-                },
-              
-              ]);
-          allDaiData?.dates
-            ? (newCategories = allDaiData?.dates)
-            : (newCategories = [
-                new Date("2023-07-01").getTime(),
-                new Date("2023-07-02").getTime(),
-                new Date("2023-07-03").getTime(),
-                new Date("2023-07-04").getTime(),
-                new Date("2023-07-05").getTime(),
-                new Date("2023-07-06").getTime(),
-                new Date("2023-07-07").getTime(),
-              ]);
-          return { newData, newCategories };
-        }
-        break;
-    }
-
-    return { newData, newCategories };
-  };
-  const minValue = Math.min(...chartData.flatMap((series) => series.data));
-  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
+  //  const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  //   const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
-    series: chartData,
+    series:aprByMarket==0? [
+      { name: "Bitcoin", data: btcdata?.data },
+      { name: "Ethereum", data: ethdata?.data },
+      { name: "Solana", data: soldata?.data },
+      { name: "Binance Coin", data: bnbdata?.data },
+      { name: "USDT", data: usdtddata?.data },
+    ]:aprByMarket==1? [
+      { name: "Bitcoin", data: btcdata?.data }]:aprByMarket==2? [
+        { name: "Ethereum", data: ethdata?.data }]:aprByMarket==3? [
+          { name: "Solana", data: soldata?.data }]:aprByMarket==4? [
+            { name: "Binance Coin", data: bnbdata?.data }]:aprByMarket==5? [
+              { name: "USDT", data: usdtddata?.data }]:[],
     options: {
       chart: {
-        // offsetX: 50,
+        // offsetX: 50
         toolbar: {
           show: false,
         },
@@ -717,7 +115,7 @@ const MarketMetrics = ({ router,color, curveColor, series }: any) => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return (val / 100)?.toFixed(1) + "%"; // Display the data value as the label
+          return val; // Display the data value as the label
         },
       },
       xaxis: {
@@ -735,12 +133,12 @@ const MarketMetrics = ({ router,color, curveColor, series }: any) => {
         axisBorder: {
           color: "grey",
         },
-        categories: xAxisCategories,
+        categories: ethdata?.ts,
       },
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value / 100)?.toFixed(1) + "%";
+            return value;
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -748,8 +146,8 @@ const MarketMetrics = ({ router,color, curveColor, series }: any) => {
             fontWeight: "400",
           },
         },
-        min: minValue - 0.05 * minValue,
-        max: maxValue + 0.05 * maxValue,
+        min: 0,
+        // max: 10000,
       },
       legend: {
         fontSize: "12px",
@@ -767,23 +165,7 @@ const MarketMetrics = ({ router,color, curveColor, series }: any) => {
       grid: {
         borderColor: "#2B2F35",
       },
-      annotations: {
-        xaxis: [
-          {
-            x: xAxisCategories[0],
-            strokeDashArray: 0,
-            borderColor: "#292D30",
-            borderWidth: 1,
-          },
-          {
-            x: xAxisCategories[xAxisCategories.length - 1], // End position for the box
-            strokeDashArray: 0,
-            borderColor: "#292D30",
-            borderWidth: 1,
-          },
-        ],
-      },
-      // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+
       color: splineColor,
     },
   };
@@ -793,363 +175,299 @@ const MarketMetrics = ({ router,color, curveColor, series }: any) => {
       ...splineChartData.options.stroke,
       curve: "smooth",
     },
-    colors: splineColor,
+    // colors: splineColor,
     // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
   };
-
-
-  const getCoin = (CoinName: number) => {
-    switch (CoinName) {
-      case 0:
-        return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
-      case 1:
-        return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
-      case 2:
-        return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
-      case 3:
-        return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
-      case 4:
-        return <DAILogo height={"16px"} width={"16px"} />;
-        break;
-      default:
-        break;
-    }
-  };
-
- 
 
   return (
     <Box display="flex" flexDirection="column" gap="8px" width="100%">
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        height="72px"
-        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-        color="#E6EDF3"
-        // padding="24px 24px 16px"
-        px="24px"
-        fontSize="20px"
-        fontStyle="normal"
-        fontWeight="600"
-        lineHeight="30px"
-        borderRadius="6px"
-      >
-        <Box
-          w="100%"
-          display="flex"
-          gap="2"
-          justifyContent="space-between"
-          my="auto"
-        >
-          <Box mt="auto">APR by market:</Box>
-          <Box display="flex" gap="2">
-            <Button
-              color="#3E415C"
-              size="sm"
-              border={aprByMarket === 0 ? "none" : "1px solid #3E415C"}
-              variant={aprByMarket === 0 ? "solid" : "outline"}
-              onClick={() => {
-                setAPRByMarket(0);
-              }}
-            >
-              1D
-            </Button>
-            <Button
-              color="#3E415C"
-              size="sm"
-              border={aprByMarket === 1 ? "none" : "1px solid #3E415C"}
-              variant={aprByMarket === 1 ? "solid" : "outline"}
-              onClick={() => {
-                setAPRByMarket(1);
-              }}
-              isDisabled={false}
-              _disabled={{
-                cursor: "pointer",
-                color: "#3E415C",
-                border: `${aprByMarket === 2 ? "none" : "1px solid #3E415C"}`,
-              }}
-            >
-              1W
-            </Button>
-            <Button
-              color="#3E415C"
-              size="sm"
-              border={aprByMarket === 2 ? "none" : "1px solid #3E415C"}
-              variant={aprByMarket === 2 ? "solid" : "outline"}
-              onClick={() => {
-                setAPRByMarket(2);
-              }}
-              isDisabled={false}
-              _disabled={{
-                cursor: "pointer",
-                color: "#3E415C",
-                border: `${aprByMarket === 2 ? "none" : "1px solid #3E415C"}`,
-              }}
-            >
-              1M
-            </Button>
-
-            <Button
-              color="#3E415C"
-              size="sm"
-              border={aprByMarket === 3 ? "none" : "1px solid #3E415C"}
-              variant={aprByMarket === 3 ? "solid" : "outline"}
-              onClick={() => {
-                setAPRByMarket(3);
-              }}
-              isDisabled={true}
-              _disabled={{
-                cursor: "pointer",
-                color: "#3E415C",
-                border: `${aprByMarket === 3 ? "none" : "1px solid #3E415C"}`,
-              }}
-            >
-              ALL
-            </Button>
-          </Box>
-        </Box>
-      </Box>
-      <Box
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="6px"
         padding="16px 24px 40px"
+      
       >
-        {/* <Box
-          display="flex"
-          border="1px"
-          borderColor="#2B2F35"
-          justifyContent="space-between"
-          w="35%"
-          py="2"
-          pl="3"
-          pr="3"
-          mb="1rem"
-          mt="0.3rem"
-          borderRadius="md"
-          className="navbar"
-          cursor="pointer"
-          onClick={() => {
-            handleDropdownClick("coinSelectedAPRByMarket");
-            // if (transactionStarted) {
-            //   return;
-            // } else {
-            // }
-          }}
-        >
-          <Box display="flex" gap="1">
-            <Box p="1">{getCoin(currentSelectedCoin)}</Box>
-            <Text color="white">{coins[currentSelectedCoin]}</Text>
-          </Box>
-
-          <Box pt="1" className="navbar-button">
-            {activeModal ? <ArrowUp /> : <DropdownUp />}
-          </Box>
-          {modalDropdowns.coinSelectedAPRByMarket && (
+        {btcdata == null ||
+        ethdata == null ||
+        usdtddata == null ||
+        bnbdata == null ||
+        soldata == null ? (
+          <Skeleton width={"90%"} height={350} />
+        ) : (
+          <>
+            {" "}
             <Box
-              w="full"
-              left="0"
-              bg="#03060B"
-              py="2"
-              className="dropdown-container"
-              boxShadow="dark-lg"
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-start"
+              height="72px"
+              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+              color="#E6EDF3"
+              // padding="24px 24px 16px"
+              px="24px"
+              fontSize="20px"
+              fontStyle="normal"
+              fontWeight="600"
+              lineHeight="30px"
+              borderRadius="6px"
             >
-              {coins?.map((coin: any, index: number) => {
-                return (
-                  <Box
-                    key={index}
-                    as="button"
-                    w="full"
-                    // display="flex"
-                    alignItems="center"
-                    gap="1"
-                    pr="2"
-                    display="flex"
+              <Box
+                w="100%"
+                display="flex"
+                gap="2"
+                justifyContent="space-between"
+                my="auto"
+              >
+                <Box mt="auto">APR by market:</Box>
+                <Box display="flex" gap="2">
+                  <Button
+                    color="#3E415C"
+                    size="sm"
+                    border={aprByMarket === 0 ? "none" : "1px solid #3E415C"}
+                    variant={aprByMarket === 0 ? "solid" : "outline"}
                     onClick={() => {
-                      setCurrentSelectedCoin(index);
-                      // setAsset(coin);
-                      // setCurrentSupplyAPR(
-                      //   coinIndex.find(
-                      //     (curr: any) => curr?.token === coin
-                      //   )?.idx
-                      // );
-                      ////console.log(coin,"coin in supply modal")
-
-                      dispatch(setCoinSelectedExchangeRateRToken(coin));
+                      setAPRByMarket(0);
                     }}
                   >
-                    {index === currentSelectedCoin && (
-                      <Box
-                        w="3px"
-                        h="28px"
-                        bg="#0C6AD9"
-                        borderRightRadius="md"
-                      ></Box>
-                    )}
-                    <Box
-                      w="full"
-                      display="flex"
-                      py="5px"
-                      pl={`${index === currentSelectedCoin ? "1" : "5"}`}
-                      pr="6px"
-                      gap="1"
-                      justifyContent="space-between"
-                      bg={`${
-                        index === currentSelectedCoin ? "#0C6AD9" : "inherit"
-                      }`}
-                      borderRadius="md"
-                    >
-                      <Box display="flex">
-                        <Box p="1">{getCoin(coins.indexOf(coin))}</Box>
-                        <Text color="white">{coin}</Text>
-                      </Box>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-          )}
-        </Box> */}
+                    ALL
+                  </Button>
+                  <Button
+                    color="#3E415C"
+                    size="sm"
+                    border={aprByMarket === 1 ? "none" : "1px solid #3E415C"}
+                    variant={aprByMarket === 1 ? "solid" : "outline"}
+                    onClick={() => {
+                      setAPRByMarket(1);
+                    }}
+                    isDisabled={false}
+                    _disabled={{
+                      cursor: "pointer",
+                      color: "#3E415C",
+                      border: `${
+                        aprByMarket === 2 ? "none" : "1px solid #3E415C"
+                      }`,
+                    }}
+                  >
+                    BTC
+                  </Button>
+                  <Button
+                    color="#3E415C"
+                    size="sm"
+                    border={aprByMarket === 2 ? "none" : "1px solid #3E415C"}
+                    variant={aprByMarket === 2 ? "solid" : "outline"}
+                    onClick={() => {
+                      setAPRByMarket(2);
+                    }}
+                    isDisabled={false}
+                    _disabled={{
+                      cursor: "pointer",
+                      color: "#3E415C",
+                      border: `${
+                        aprByMarket === 2 ? "none" : "1px solid #3E415C"
+                      }`,
+                    }}
+                  >
+                    ETH
+                  </Button>
 
-        <Box display="flex" gap="4" mb="1.4rem" mt="0.3rem">
+                  <Button
+                    color="#3E415C"
+                    size="sm"
+                    border={aprByMarket === 3 ? "none" : "1px solid #3E415C"}
+                    variant={aprByMarket === 3 ? "solid" : "outline"}
+                    onClick={() => {
+                      setAPRByMarket(3);
+                    }}
+                    isDisabled={false}
+                    _disabled={{
+                      cursor: "pointer",
+                      color: "#3E415C",
+                      border: `${
+                        aprByMarket === 3 ? "none" : "1px solid #3E415C"
+                      }`,
+                    }}
+                  >
+                    SOL
+                  </Button>
+                  <Button
+                    color="#3E415C"
+                    size="sm"
+                    border={aprByMarket === 4 ? "none" : "1px solid #3E415C"}
+                    variant={aprByMarket === 4 ? "solid" : "outline"}
+                    onClick={() => {
+                      setAPRByMarket(4);
+                    }}
+                  >
+                    BNB
+                  </Button>
+                  <Button
+                    color="#3E415C"
+                    size="sm"
+                    border={aprByMarket === 5 ? "none" : "1px solid #3E415C"}
+                    variant={aprByMarket === 5 ? "solid" : "outline"}
+                    onClick={() => {
+                      setAPRByMarket(5);
+                    }}
+                  >
+                    USDT
+                  </Button>
+                </Box>
+              </Box>
+            </Box>{" "}
+            <ApexCharts
+              options={options}
+              series={splineChartData.series}
+              type="line"
+              height={350}
+              
+            />
+          </>
+        )}
+        <Box   display="flex" gap="4" mb="1.4rem" mt="3rem">
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 0 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
-            borderRadius="md"
+            bg={
+              currentSelectedTab === 0
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
+            borderRadius="xl"
             border="1px"
-            borderColor={currentSelectedCoin === 0 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedTab === 0 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+            }
             // p="1"
-            onClick={() => setCurrentSelectedCoin(0)}
+            onClick={() => setcurrentSelectedTab(0)}
             cursor="pointer"
             p="2"
           >
             <Box>
-              {currentSelectedCoin === 0 ? getCoin(0) : <BtcDisabled />}
+              {currentSelectedTab === 0 ? (
+                <VscGraphLine color="green" size={"25px"} />
+              ) : (
+                <VscGraphLine color="green" size={"25px"} />
+              )}
             </Box>
             <Text
               my="auto"
               color="white"
               fontSize="12px"
               fontWeight="500"
-              textColor={currentSelectedCoin === 0 ? "white" : "#3E415C"}
+              textColor={currentSelectedTab === 0 ? "white" : "#3E415C"}
             >
-              wBTC
+              CryptoCurrencies
             </Text>
           </Box>
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 3 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
-            borderRadius="md"
+            bg={
+              currentSelectedTab == 1
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
+            borderRadius="xl"
             border="1px"
-            borderColor={currentSelectedCoin === 3 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedTab === 1 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+            }
             // p="1"
-            onClick={() => setCurrentSelectedCoin(3)}
+            onClick={() => setcurrentSelectedTab(1)}
             cursor="pointer"
             p="2"
           >
             <Box>
-              {currentSelectedCoin === 3 ? getCoin(3) : <EthDisabled />}
-            </Box>
-            <Text
-              my="auto"
-              color="white"
-              fontSize="12px"
-            fontWeight="500"
-              textColor={currentSelectedCoin === 3 ? "white" : "#3E415C"}
-            >
-              wETH
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="2"
-            bg={currentSelectedCoin === 1 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
-            borderRadius="md"
-            border="1px"
-            borderColor={currentSelectedCoin === 1 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
-            // p="1"
-            onClick={() => setCurrentSelectedCoin(1)}
-            cursor="pointer"
-            p="2"
-          >
-            <Box>
-              {currentSelectedCoin === 1 ? getCoin(1) : <UsdtDisabled />}
+              {currentSelectedTab === 1 ? (
+                <HiTrendingUp color="red" size={"25px"} />
+              ) : (
+                <HiTrendingUp color="red" size={"25px"} />
+              )}
             </Box>
             <Text
               my="auto"
               color="white"
               fontSize="12px"
               fontWeight="500"
-              textColor={currentSelectedCoin === 1 ? "white" : "#3E415C"}
+              textColor={currentSelectedTab === 1 ? "white" : "#3E415C"}
             >
-              USDT
+              Trending Coins
             </Text>
           </Box>
+
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 2 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
-            borderRadius="md"
+            bg={
+              currentSelectedTab === 2
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
+            borderRadius="xl"
             border="1px"
-            borderColor={currentSelectedCoin === 2 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedTab === 2 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+            }
             // p="1"
-            onClick={() => setCurrentSelectedCoin(2)}
+            onClick={() => setcurrentSelectedTab(2)}
             cursor="pointer"
             p="2"
           >
             <Box>
-              {currentSelectedCoin === 2 ? getCoin(2) : <UsdcDisabled />}
+              {currentSelectedTab === 2 ? (
+                <FaFire color="orange" size={"25px"} />
+              ) : (
+                <FaFire color="orange" size={"25px"} />
+              )}
             </Box>
             <Text
               my="auto"
               color="white"
               fontSize="12px"
               fontWeight="500"
-              textColor={currentSelectedCoin === 2 ? "white" : "#3E415C"}
+              textColor={currentSelectedTab === 2 ? "white" : "#3E415C"}
             >
-              USDC
+              HOT NFTs
             </Text>
           </Box>
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 4 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
-            borderRadius="md"
+            bg={
+              currentSelectedTab === 3
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
+            borderRadius="xl"
             border="1px"
-            borderColor={currentSelectedCoin === 4 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedTab === 3 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+            }
             // p="1"
-            onClick={() => setCurrentSelectedCoin(4)}
+            onClick={() => setcurrentSelectedTab(3)}
             cursor="pointer"
             p="2"
           >
             <Box>
-              {currentSelectedCoin === 4 ? getCoin(4) : <DaiDisabled />}
+              {currentSelectedTab === 3 ? (
+                <FaSearch color="white" size={"25px"} />
+              ) : (
+                <FaSearch color="white" size={"25px"} />
+              )}
             </Box>
             <Text
               my="auto"
               color="white"
               fontSize="12px"
               fontWeight="500"
-              textColor={currentSelectedCoin === 4 ? "white" : "#3E415C"}
+              textColor={currentSelectedTab === 3 ? "white" : "#3E415C"}
             >
-              DAI
+              Most Searches
             </Text>
           </Box>
         </Box>
 
-        <ApexCharts
-          options={options}
-          series={splineChartData.series}
-          type="line"
-          height={350}
-        />
-        <MarketListTracker />
+        <MarketListTracker category={currentSelectedTab.toString()} />
       </Box>
     </Box>
   );

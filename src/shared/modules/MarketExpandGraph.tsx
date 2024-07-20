@@ -7,6 +7,7 @@ import { selectcoinHistoricData, selectCoinInformation } from "@/store/slices/re
 import { useSelector } from "react-redux";
 import useCoinDataLoader from "../hooks/useCoinLoader";
 import numberFormatter from "@/utils/numberFormatter";
+import PiChart from "../components/piChart";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -19,6 +20,7 @@ const [pricevalues, setpricevalues] = useState([0])
 
   const coinMarketData = useSelector(selectcoinHistoricData);
   const { coinHistoricDataAvailable } = useCoinDataLoader( coinId);
+  const coininformation = useSelector(selectCoinInformation);
   
   useEffect(() => {
     if (coinHistoricDataAvailable && coinMarketData?.coin?.day?.prices) {
@@ -144,7 +146,15 @@ const [pricevalues, setpricevalues] = useState([0])
         colors: splineColor,
         // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
       };
-    
+      const pichartoptions = {
+        series: [coinMarketData?.coin?.market_data?.circulating_supply,coinMarketData?.coin?.market_data?.total_supply-coinMarketData?.coin?.market_data?.circulating_supply],
+        chart: {
+          type: 'pie',
+        },
+        labels: ['Circulating Supply', 'Locked '],
+        colors: ['#FF1654', '#247BA0'],
+      };
+    console.log(coininformation?.coin?.market_data?.circulating_supply)
     return(
         <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box
@@ -152,7 +162,6 @@ const [pricevalues, setpricevalues] = useState([0])
           flexDirection="column"
           alignItems="flex-start"
           height="72px"
-          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           color="#E6EDF3"
           // padding="24px 24px 16px"
           px="24px"
@@ -240,18 +249,23 @@ const [pricevalues, setpricevalues] = useState([0])
         <Box
           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           borderRadius="6px"
+          display={'flex'}
+          flexDirection={'row'}
+          justifyContent={'center'}
           padding="16px 24px 40px"
         >
 
          
   
-      {pricevalues.length>1 && xAxisCategories.length>1 ?    <ApexCharts
+      {pricevalues.length>1 && xAxisCategories.length>0?    <ApexCharts
             options={options}
             series={splineChartData.series}
             type="line"
             height={"350"}
             width={"720"}
-          />:<Spinner/>}
+          />:<Spinner height={"350"}/>}
+
+          {coinMarketData  ?    <PiChart arg1={coininformation?.coin?.market_data?.circulating_supply} arg2={coininformation?.coin?.market_data?.total_supply-coininformation?.coin?.market_data?.circulating_supply} />:<Spinner height={"350"}/> }
           {/* <MarketListTracker /> */}
         </Box>
       </Box>

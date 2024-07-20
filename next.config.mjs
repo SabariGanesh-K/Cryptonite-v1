@@ -5,6 +5,7 @@ const nextConfig = {
         {
           hostname: "coin-images.coingecko.com",
         },
+        {hostname:"assets.coingecko.com"},
         {
           hostname: "flowbite.s3.amazonaws.com",
         },

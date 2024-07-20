@@ -2,7 +2,7 @@
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 
-
+import Footer from "@/shared/widgets/Footer";
 import NavBar from "@/shared/widgets/NavBar";
 interface Props extends StackProps {
   children: ReactNode;
@@ -89,7 +89,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             </Stack>
            
             {/* <ToastContainer theme="dark" /> */}
-            {/* <Footer /> */}
+            <Footer />
           </>
         ) : (
           <>

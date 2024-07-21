@@ -43,9 +43,9 @@ export default function MarketDescription(coinId: any) {
   const { coinHistoricDataAvailable, available } = useCoinDataLoader(coinId);
   const [coinsData, setcoinsData] = useState<any>({});
   useEffect(() => {
-    console.log(coinInformationData);
-    if (coinInformationData?.coin?.id) {
-      setcoinsData(coinInformationData?.coin);
+    console.log(coinId,coinInformationData);
+    if (coinInformationData[coinId.coinId]) {
+      setcoinsData(coinInformationData[coinId.coinId]);
     }
   }, [coinInformationData]);
   return available ? (

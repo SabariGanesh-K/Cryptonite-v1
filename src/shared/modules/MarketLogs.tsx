@@ -88,7 +88,7 @@ const MarketLogsDashboard = ({
         // pb={"0.5rem"}
         overflowX="hidden"
       >
-        {marketLogsData.length != 0 ? (
+        {marketLogsData?.length != 0 ? (
           <Table variant="unstyled" width="100%">
             <Thead width={"100%"} height={"5rem"}>
               <Tr width={"100%"} height="2rem">

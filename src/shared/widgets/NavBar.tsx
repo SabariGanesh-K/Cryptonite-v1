@@ -95,47 +95,7 @@ const [Render, setRender] = useState(true);
           </Box>
         </Link>
 
-        <Box
-          padding="16px 12px"
-          fontSize="14px"
-          borderRadius="5px"
-          cursor="pointer"
-          marginBottom="0px"
-          className="button"
-        //   color={pathname !== "/v1/airdrop_leaderboard" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
-        color={ "#676D9A"}
-
-          // _hover={{
-          //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
-          // }}
-          onClick={() => {
-            if (router.pathname != "/waitlist") {
-              router.push("/v1/market");
-            }
-          }}
-        //   onMouseEnter={() => setDashboardHover(true)}
-        //   onMouseLeave={() => setDashboardHover(false)}
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            gap={"8px"}
-          >
-         
-           
-              <Image
-              src={"/dashboardIcon.svg"}
-              alt="Picture of the author"
-              width="16"
-              height="16"
-              style={{ cursor: "pointer" }}
-            />
-            
-
-            <Text fontSize="14px">Dashboard</Text>
-          </Box>
-        </Box>
+     
   
 
       </HStack>

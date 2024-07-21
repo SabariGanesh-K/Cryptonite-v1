@@ -11,9 +11,9 @@ const initialState = {
   top50Data: null,
   coinHistoricData: {},
   coinInformation :{},
-  BTCcompanyHoldingsData:{},
-  ETHCompanyHoldingsData:{},
-  TrendingData:{},
+  BTCcompanyHoldingsData:null,
+  ETHCompanyHoldingsData:null,
+  TrendingData:null,
 };
 
 export const readDataSlice = createSlice({

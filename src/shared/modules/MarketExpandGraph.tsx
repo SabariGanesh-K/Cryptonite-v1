@@ -12,7 +12,7 @@ import PiChart from "../components/piChart";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function MarketExpandGraph(coinId:any){
-    console.log("hi")
+    console.log("hi",coinId)
   const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
   const [xAxisCategories, setXAxisCategories] = useState([]);
   const [aprByMarket, setAPRByMarket] = useState(0);
@@ -21,11 +21,11 @@ const [pricevalues, setpricevalues] = useState([0])
   const coinMarketData = useSelector(selectcoinHistoricData);
   const { coinHistoricDataAvailable } = useCoinDataLoader( coinId);
   const coininformation = useSelector(selectCoinInformation);
-  
+  console.log(coinMarketData)
   useEffect(() => {
-    if (coinHistoricDataAvailable && coinMarketData?.coin?.day?.prices) {
-      const priceData = coinMarketData.coin.day.prices.map((pair:any) => pair[1]);
-      const xaxisCategories = coinMarketData.coin.day.prices.map((pair: any) => pair[0] );
+    if (coinMarketData[coinId?.coinId]?.prices) {
+      const priceData = coinMarketData[coinId?.coinId]?.prices.map((pair:any) => pair[1]);
+      const xaxisCategories = coinMarketData[coinId?.coinId]?.prices.map((pair: any) => pair[0] );
 
       if (priceData.length > 0) {
         setpricevalues(priceData);
@@ -36,14 +36,15 @@ const [pricevalues, setpricevalues] = useState([0])
       // setpricevalues(priceDta);
       console.log(priceData,xAxisCategories);
     }
-  }, [coinMarketData, coinHistoricDataAvailable]);
+  }, [coinMarketData,coinId]);
   
 
-// console.log("price data",coinMarketData?.coin?.day?.prices? data?.coin?.day?.prices.map((pair:any) => pair[1]):[],data)
+// console.log("price data",coinMarketData[coinId?.coinId]?.prices.map((pair:any) => pair[1]):[0])
+console.log(coinMarketData[coinId?.coinId]?.prices)
     const splineChartData = {
       series: [{
         name: "prices",
-        data:pricevalues,
+        data:coinMarketData[coinId?.coinId]?.prices ? coinMarketData[coinId?.coinId]?.prices.map((pair:any) => pair[1]):[0],
       }],
     
         
@@ -85,7 +86,7 @@ const [pricevalues, setpricevalues] = useState([0])
             axisBorder: {
               color: "grey",
             },
-            categories: xAxisCategories,
+            categories:coinMarketData[coinId?.coinId]?.prices? coinMarketData[coinId?.coinId]?.prices.map((pair: any) => pair[0] ):[0],
           },
           yaxis: {
             labels: {
@@ -117,22 +118,7 @@ const [pricevalues, setpricevalues] = useState([0])
           grid: {
             borderColor: "#2B2F35",
           },
-          annotations: {
-            xaxis: [
-              {
-                x: xAxisCategories[0],
-                strokeDashArray: 0,
-                borderColor: "#292D30",
-                borderWidth: 1,
-              },
-              {
-                x: xAxisCategories[xAxisCategories.length - 1], // End position for the box
-                strokeDashArray: 0,
-                borderColor: "#292D30",
-                borderWidth: 1,
-              },
-            ],
-          },
+     
           // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
           color: splineColor,
         },
@@ -154,7 +140,7 @@ const [pricevalues, setpricevalues] = useState([0])
         labels: ['Circulating Supply', 'Locked '],
         colors: ['#FF1654', '#247BA0'],
       };
-    console.log(coininformation?.coin?.market_data?.circulating_supply)
+    console.log(coininformation[coinId.coinId]?.market_data?.circulating_supply)
     return(
         <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box
@@ -257,7 +243,7 @@ const [pricevalues, setpricevalues] = useState([0])
 
          
   
-      {pricevalues.length>1 && xAxisCategories.length>0?    <ApexCharts
+      {coinMarketData[coinId?.coinId]?.prices !=null ? <ApexCharts
             options={options}
             series={splineChartData.series}
             type="line"
@@ -265,7 +251,7 @@ const [pricevalues, setpricevalues] = useState([0])
             width={"720"}
           />:<Spinner height={"350"}/>}
 
-          {coinMarketData  ?    <PiChart arg1={coininformation?.coin?.market_data?.circulating_supply} arg2={coininformation?.coin?.market_data?.total_supply-coininformation?.coin?.market_data?.circulating_supply} />:<Spinner height={"350"}/> }
+          {coinMarketData  ?    <PiChart arg1={coininformation[coinId.coinId]?.market_data?.circulating_supply} arg2={coininformation[coinId.coinId]?.market_data?.total_supply-coininformation[coinId.coinId]?.market_data?.circulating_supply} />:<Spinner height={"350"}/> }
           {/* <MarketListTracker /> */}
         </Box>
       </Box>

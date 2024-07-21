@@ -48,7 +48,7 @@ import { FiRefreshCcw } from "react-icons/fi";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const MarketMetrics = ({ router, color, curveColor, series }: any) => {
   // const router = useRouter()
-  const [aprByMarket, setAPRByMarket] = useState(0);
+  const [aprByMarket, setAPRByMarket] = useState<number>(0);
   const [chartData, setChartData] = useState([
     {
       name: "Series 1",
@@ -79,14 +79,18 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
 
   const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
   const [currentSelectedTab, setcurrentSelectedTab] = useState<number>(0);
-  ////console.log(btcData, "btc")
-  console.log(JSON.stringify(ethdata));
+  console.log(btcdata?.data, "btc")
+  // console.log(JSON.stringify(ethdata));
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
 
   //  const minValue = Math.min(...chartData.flatMap((series) => series.data));
   //   const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
-    series:aprByMarket==0? [
+    series:(btcdata == null ||
+    ethdata == null ||
+    usdtddata == null ||
+    bnbdata == null ||
+    soldata == null )? [{name:"hehe",data:[0,1]}]:(aprByMarket==0? [
       { name: "Bitcoin", data: btcdata?.data },
       { name: "Ethereum", data: ethdata?.data },
       { name: "Solana", data: soldata?.data },
@@ -97,7 +101,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
         { name: "Ethereum", data: ethdata?.data }]:aprByMarket==3? [
           { name: "Solana", data: soldata?.data }]:aprByMarket==4? [
             { name: "Binance Coin", data: bnbdata?.data }]:aprByMarket==5? [
-              { name: "USDT", data: usdtddata?.data }]:[],
+              { name: "USDT", data: usdtddata?.data }]:[]),
     options: {
       chart: {
         // offsetX: 50
@@ -115,7 +119,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return val; // Display the data value as the label
+          return val?val:""; // Display the data value as the label
         },
       },
       xaxis: {
@@ -138,7 +142,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value;
+            return value?value:"";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -187,11 +191,11 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
         padding="16px 24px 40px"
       
       >
-        {btcdata == null ||
-        ethdata == null ||
-        usdtddata == null ||
-        bnbdata == null ||
-        soldata == null ? (
+        {btcdata?.data == null ||
+        ethdata?.data == null ||
+        usdtddata?.data == null ||
+        bnbdata?.data == null ||
+        soldata?.data == null ? (
           <Skeleton width={"90%"} height={350} />
         ) : (
           <>
@@ -315,10 +319,11 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
               </Box>
             </Box>{" "}
             <ApexCharts
+            width={'100%'}
               options={options}
               series={splineChartData.series}
               type="line"
-              height={350}
+              height={500}
               
             />
           </>

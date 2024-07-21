@@ -17,13 +17,11 @@ const useCoinDataLoader = (coinId:string) => {
     console.log("hehehe")
     const dispatch = useDispatch()
     useEffect(()=>{
-        if(coinMarketData.coinId!=null){
-          // setCoinHistoricData(coinMarketData[coin])
-          dispatch(setCoinHistoricData(coinMarketData.coinId))
-// setAvailable(true)
+      const fetchData= async() =>{
 
-        }
-        else{
+        console.log('fetcihing for ',(coinId as any)?.coinId );
+      if(coinMarketData[(coinId as any)?.coinId]==null){
+
             const data={"day":{
                 "prices": [
                   [
@@ -154,13 +152,47 @@ const useCoinDataLoader = (coinId:string) => {
                   ]
                 ]
               }}
+              if (
+                localStorage.getItem(`coinMarketData[${(coinId as any)?.coinId}]`) == null || 
+                JSON.parse(localStorage.getItem(`coinMarketData[${(coinId as any)?.coinId}]`) as any).expire < new Date().getTime()
+              ) {
               // setCoinHistoricData({coin:data});
-              console.log("adding to dispatch",{coin:data})
-          dispatch(setCoinHistoricData({coin:data}))
+              console.log("fetching for ",(coinId as any)?.coinId)
+              fetch(
+                `https://api.coingecko.com/api/v3/coins/${(coinId as any)?.coinId}/market_chart?vs_currency=usd&days=360`
+              )
+                .then((res) => res.json())
+                .then((json) => {
+                  console.log(json);
+    
+                 
+                  const now = new Date();
+                  if(json && json?.status==null){
+                        
+                    console.log("adding to dispatch",{[(coinId as any)?.coinId]:json})
+                    dispatch(setCoinHistoricData({[(coinId as any)?.coinId]:json}))
+          localStorage.setItem(
+                   `coinMarketData[${(coinId as any)?.coinId}]`,
+                    JSON.stringify({
+                      data: json,
+                      expire: new Date(now.getTime() + 30 * 60 * 1000),
+                    })
+                  );
+                  console.log("adding to cache")
+                  // console.log("dispatched", json);
+    
+                  }
+            
+                }).catch((err) => console.error("error:" + err));;
+    
 
-              setAvailable(true)
+              }else{
+                console.log('fetch lopcal for',(coinId as any)?.coinId)
+          dispatch(setCoinHistoricData({[(coinId as any)?.coinId]:JSON.parse(localStorage.getItem(`coinMarketData[${(coinId as any)?.coinId}]`) as any).data}))
+                
+              }
         }
-        if(coinInformationData.coin==null){
+        if(coinInformationData[(coinId as any)?.coinId]==null){
           //fetch and set
           const data={coin:{
             "id": "bitcoin",
@@ -1800,9 +1832,48 @@ const useCoinDataLoader = (coinId:string) => {
               }
             ]
           }}
-          dispatch(setCoinInformation(data));
+          if (
+            localStorage.getItem(`coinInformatiomData[${(coinId as any)?.coinId}]`) == null || 
+            JSON.parse(localStorage.getItem(`coinInformatiomData[${(coinId as any)?.coinId}]`) as any).expire < new Date().getTime()
+          ) {
+            console.log("fetching for ",(coinId as any)?.coinId);
+            fetch(
+              `https://api.coingecko.com/api/v3/coins/${(coinId as any)?.coinId} `
+            )
+              .then((res) => res.json())
+              .then((json) => {
+                console.log(json);
+  
+               
+                const now = new Date();
+                if(json && json?.status==null){
+                      
+                  console.log("adding to dispatch",{[(coinId as any)?.coinId]:json})
+                  dispatch(setCoinInformation({[(coinId as any)?.coinId]:json}));
+
+        localStorage.setItem(
+                 `coinInformatiomData[${(coinId as any)?.coinId}]`,
+                  JSON.stringify({
+                    data: json,
+                    expire: new Date(now.getTime() + 30 * 60 * 1000),
+                  })
+                );
+                console.log("adding to cache")
+                // console.log("dispatched", json);
+  
+                }
+          
+              }).catch((err) => console.error("error:" + err));
+  
+          }
+          else{
+            console.log('fetch lopcal for',(coinId as any)?.coinId)
+            dispatch(setCoinInformation({[(coinId as any)?.coinId]:JSON.parse(localStorage.getItem(`coinInformatiomData[${(coinId as any)?.coinId}]`) as any).data}))
+          }
           setAvailable(true)
         }
+      }
+      fetchData()
     },[])
       return {setCoinHistoricData,available,coinHistoricDataAvailable}
       }

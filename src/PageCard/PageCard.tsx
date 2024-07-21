@@ -59,12 +59,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       <>
         {render ? (
           <>
+      
             <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
             black
           `} position={'fixed'} zIndex={3} >
               <NavBar  />
+              <title>Coin Analysis | CryptoNite</title>
             </Box>
             <Box position={'fixed'} zIndex={0.5}>
               {/* <FeedbackModal /> */}

@@ -36,7 +36,6 @@ import {
   selectETHcompanyHoldingsData,
 } from "@/store/slices/readDataSlice";
 import { useSelector } from "react-redux";
-import useCoinDataLoader from "../hooks/useCoinLoader";
 import numberFormatter from "@/utils/numberFormatter";
 import CoinSocialButton from "../components/coinSocialButton";
 import { InfoIcon } from "@chakra-ui/icons";
@@ -57,6 +56,7 @@ import ETHLogo from "@/assets/icons/coins/eth";
 export default function CompanyHoldingsData(coinId: any) {
   const btcHolding = useSelector(selectBTCcompanyHoldingsData);
   const ethHolding = useSelector(selectETHcompanyHoldingsData);
+  console.log(btcHolding,ethHolding)
   const { available } = useDataLoader();
   const columnItems = [
     "#",
@@ -72,7 +72,7 @@ export default function CompanyHoldingsData(coinId: any) {
   const [tabBTCValue, setTabBTCValue] = useState(1);
   const [currentETHPagination, setcurrentETHPagination] = useState<number>(1);
   const [tabETHValue, setTabETHValue] = useState(1);
-  console.log(btcHolding.total_value_usd);
+  // console.log(btcHolding.total_value_usd);
   return (
     <>
       <>
@@ -123,7 +123,7 @@ export default function CompanyHoldingsData(coinId: any) {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Holdings
             </Text>
-            {!btcHolding || !btcHolding?.total_holdings == null ? (
+            {!btcHolding || !btcHolding?.total_holdings  ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -133,7 +133,7 @@ export default function CompanyHoldingsData(coinId: any) {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {numberFormatter(btcHolding.total_holdings)}
+                {numberFormatter(btcHolding?.total_holdings)}
               </Text>
             )}
           </VStack>
@@ -238,7 +238,11 @@ export default function CompanyHoldingsData(coinId: any) {
             </Box>
           </HStack>
         ) : (
-          <Spinner />
+          <Skeleton
+         
+         
+          color="#010409"
+          size="xl" height={'80vh'} />
         )}
       </>
       <>
@@ -403,7 +407,10 @@ export default function CompanyHoldingsData(coinId: any) {
             </Box>
           </HStack>
         ) : (
-          <Spinner />
+          <Skeleton 
+      
+          // color="#010409"
+          size="xl" height={'80vh'} />
         )}
       </>
     </>

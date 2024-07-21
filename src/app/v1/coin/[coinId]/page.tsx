@@ -9,11 +9,11 @@ import { useSelector } from "react-redux";
 import { selectcoinHistoricData } from "@/store/slices/readDataSlice";
 import MarketExpandGraph from "@/shared/modules/MarketExpandGraph";
 import MarketDescription from "@/shared/modules/MarketDescription";
-
+let coinName = "";
 export default function CoinPage({ params }: { params: { coinId: string } }) {
   // const navigate = useNavigate()]
   const router=useRouter()
-
+  coinName=params.coinId;
   const handleButtonClick = (val: string) => {
     localStorage.setItem("currentPage", val);
     console.log("yess")
@@ -22,10 +22,11 @@ export default function CoinPage({ params }: { params: { coinId: string } }) {
   };
   // const coinMarketData=useSelector(selectcoinHistoricData);
   const [backHover, setBackHover] = useState(false);
-// const {coinHistoricDataAvailable} = useCoinDataLoader(coinMarketData,params.coinId);
+
 // console.log("hehe",JSON.stringify(coinMarketData?.coin?.day?.prices?.map((pair:any) => pair[1])));
   return (
-    <PageCard>
+    <PageCard title={params.coinId}>
+          
       <HStack>
         <Box
           onClick={() => handleButtonClick("v1")}
@@ -70,9 +71,9 @@ export default function CoinPage({ params }: { params: { coinId: string } }) {
           </Button>
         </Box>
       </HStack>
-      <MarketExpandGraph data={params.coinId}/>
+      <MarketExpandGraph coinId={params.coinId}/>
       {/* <MarketExpandGraph data={}/> */}
-      <MarketDescription />
+      <MarketDescription coinId={params.coinId} />
     </PageCard>
   );
 }

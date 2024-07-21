@@ -50,7 +50,7 @@ const toast = useToast();
     "accept": "application/json",
    "x-cg-demo-api-key": apiKey
 }
-
+console.log(apiKey,"apikey");
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchTop5Data = async () => {

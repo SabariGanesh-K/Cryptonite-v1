@@ -11,65 +11,19 @@ import {
   selectBTCData,
   selectETHData,
   selectSolanaData,
-  selectTop50Data,
   selectUSDTData,
-  setBNBData,
-  setBTCcompanyHoldingsData,
-  setBTCData,
-  setETHCompanyHoldingsData,
-  setETHData,
-  setSolanaData,
-  setTop50Data,
-  setTrendingData,
-  setUSDTData,
+
 } from "@/store/slices/readDataSlice";
 
-import BTCLogo from "@/assets/icons/coins/btc";
-import USDCLogo from "@/assets/icons/coins/usdc";
-import USDTLogo from "@/assets/icons/coins/usdt";
-import ETHLogo from "@/assets/icons/coins/eth";
-import DAILogo from "@/assets/icons/coins/dai";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import ArrowUp from "@/assets/icons/arrowup";
-import Image from "next/image";
-import EthDisabled from "@/assets/icons/coins/ethDisabled";
-import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
-import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
-import DaiDisabled from "@/assets/icons/coins/daiDisabled";
-import BtcDisabled from "@/assets/icons/coins/btcDisabled";
+
 import MarketListTracker from "../modules/MarketListTracker";
-import { useRouter } from "next/router";
 import { VscGraphLine } from "react-icons/vsc";
 import { HiTrendingUp } from "react-icons/hi";
-import { FaHotjar } from "react-icons/fa6";
 import { FaFire, FaSearch } from "react-icons/fa";
-import { FiRefreshCcw } from "react-icons/fi";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const MarketMetrics = ({ router, color, curveColor, series }: any) => {
-  // const router = useRouter()
   const [aprByMarket, setAPRByMarket] = useState<number>(0);
-  const [chartData, setChartData] = useState([
-    {
-      name: "Series 1",
-      data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
-    },
-    {
-      name: "Series 2",
-      data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
-    },
-    {
-      name: "Series 3",
-      data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
-    },
-    {
-      name: "Series 4",
-      data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
-    },
-    {
-      name: "Series 5",
-      data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
-    },
-  ]);
+
   const btcdata = useSelector(selectBTCData);
   const ethdata = useSelector(selectETHData);
   const soldata = useSelector(selectSolanaData);
@@ -79,11 +33,6 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
   const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
   const [currentSelectedTab, setcurrentSelectedTab] = useState<number>(0);
   console.log(btcdata?.data, "btc")
-  // console.log(JSON.stringify(ethdata));
-  const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
-
-  //  const minValue = Math.min(...chartData.flatMap((series) => series.data));
-  //   const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series:(btcdata == null ||
     ethdata == null ||
@@ -103,7 +52,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
               { name: "USDT", data: usdtddata?.data }]:[]),
     options: {
       chart: {
-        // offsetX: 50
+       
         toolbar: {
           show: false,
         },
@@ -178,8 +127,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
       ...splineChartData.options.stroke,
       curve: "smooth",
     },
-    // colors: splineColor,
-    // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+
   };
 
   return (

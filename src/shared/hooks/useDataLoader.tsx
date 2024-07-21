@@ -245,8 +245,8 @@ console.log(apiKey,"apikey");
               .then((json) => {
                 console.log(json);
                 // const prices=
-                const price = json.prices.map((pair: any) => pair[1]);
-                const xAxisCategories = json.prices.map((pair: any) => pair[0]);
+                const price = json?.prices.map((pair: any) => pair[1]);
+                const xAxisCategories = json?.prices.map((pair: any) => pair[0]);
                 // const prices = json.prices.map((price:any) => ({ x: price[0], y: price[1] }));
                 dispatch(
                   setETHData({

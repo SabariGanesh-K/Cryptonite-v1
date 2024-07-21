@@ -3,16 +3,8 @@
 import { ChakraProvider, ToastProvider } from "@chakra-ui/react";
 import { Provider } from "react-redux";
 import {store} from '../store/store'
-import { Metadata } from 'next';
+console.log = function() {}
 
-// export const metadata: Metadata = {
-//   title: {
-//     template: '%s | CryptoNite',
-//     default: 'CryptoNite | Yours Crypto partner',
-//   },
-//   description: 'Get the most out of your crypto investments with our tracking tools',
-
-// };
 export default function RootLayout({
   children,
 }: {

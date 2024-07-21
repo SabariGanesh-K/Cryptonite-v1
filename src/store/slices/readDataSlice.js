@@ -14,6 +14,7 @@ const initialState = {
   BTCcompanyHoldingsData:null,
   ETHCompanyHoldingsData:null,
   TrendingData:null,
+  RateLimitError:false
 };
 
 export const readDataSlice = createSlice({
@@ -53,6 +54,9 @@ export const readDataSlice = createSlice({
     setTrendingData(state,action){
       state.TrendingData = action.payload;
     },
+    setRateLimitError(state,action){
+      state.RateLimitError = action.payload;
+    },
 
 
     extraReducers: {
@@ -77,7 +81,8 @@ export const {
   setCoinInformation,
   setBTCcompanyHoldingsData,
   setETHCompanyHoldingsData,
-  setTrendingData
+  setTrendingData,
+  setRateLimitError
 } = readDataSlice.actions;
 
 export const selectBTCData = (state) => state.read_data. BTCData;
@@ -91,6 +96,7 @@ export const selectCoinInformation = (state) => state.read_data.coinInformation;
 export const selectBTCcompanyHoldingsData = (state) => state.read_data.BTCcompanyHoldingsData;
 export const selectETHcompanyHoldingsData = (state) => state.read_data.ETHCompanyHoldingsData;
 export const selectTrendingData = (state) => state.read_data.TrendingData;
+export const selectRateLimitError=(state)=>state.read_data.RateLimitError;
 
 
 

@@ -13,6 +13,11 @@ const nextConfig = {
         { hostname: "picsum.photos" },
       ],
     },
+    routes: {
+      '*': './pages/*.tsx',
+      404: './404.tsx',
+    },
+  
   };
   
   export default nextConfig;

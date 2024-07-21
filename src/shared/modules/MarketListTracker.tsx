@@ -1525,7 +1525,7 @@ const MarketListTracker = ({ category }: { category: string }) => {
     "0": ["", "", "CURRENT_PRICE", "MARKETCAP"],
     "1": ["#",  "", "Price","Market Cap"],
     "2": ["#",  "", "Floor Price",  "Recent Average Sale Price"],
-    "3": ["#",  "", "Total Volume",  "Market Cap"],
+    "3": ["#",  ""],
   };
   console.log(category, columnItems[category]);
   return (

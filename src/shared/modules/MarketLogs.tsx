@@ -12,12 +12,14 @@ import {
   Tooltip,
   Progress,
   HStack,
+  VStack,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { redirect } from "next/navigation";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 const MarketLogsDashboard = ({
   width,
@@ -26,7 +28,7 @@ const MarketLogsDashboard = ({
   marketLogsData,
   currency,
   columnItems,
-  category
+  category,
 }: {
   width: string;
   currentPagination: any;
@@ -34,7 +36,7 @@ const MarketLogsDashboard = ({
   marketLogsData: any;
   currency: any;
   columnItems: any;
-  category:any;
+  category: any;
 }) => {
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
@@ -158,7 +160,8 @@ const MarketLogsDashboard = ({
                           bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
                         }}
                         onClick={() =>
-                         category=="0" && window.location.replace(`/v1/coin/${market.id}`)
+                          category == "0" &&
+                          window.location.replace(`/v1/coin/${market.id}`)
                         }
                         key={lower_bound + idx}
                         width={"100%"}
@@ -188,56 +191,77 @@ const MarketLogsDashboard = ({
                               fontStyle="normal"
                               fontFamily="Inter"
                             >
-                              {category=="0"?market.name:category=="1"?market?.item?.name:category=="2"?market?.name:category=="3"?market?.name:"" }
+                              {category == "0"
+                                ? market.name
+                                : category == "1"
+                                ? market?.item?.name
+                                : category == "2"
+                                ? market?.name
+                                : category == "3"
+                                ? market?.name
+                                : ""}
                               {/* {category=='0'?market.name:category=='1'?market.coins} */}
                             </Text>
                           </Box>
                         </Td>
 
-                    {category!="3"&&    <Td
-                          width={"16.6%"}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="center"
-                        >
-                          <HStack
-                            gap="10px"
-                            display="flex"
-                            justifyContent="flex-center"
-                            alignItems="center"
+                        {category != "3" && (
+                          <Td
+                            width={"16.6%"}
+                            fontSize={"14px"}
+                            fontWeight={400}
+                            padding={2}
+                            textAlign="center"
                           >
-                            <Box height="2rem" width="2rem">
-                              <Image
-                              src={category=="0"?market.image:category=="1"?market?.item?.thumb:category=="2"?market?.thumb:"#"}
-
-                                // src={market.image}
-                                alt={`Picture of the coin that I want to access ${market.name}`}
-                                width="32"
-                                height="32"
-                              />
-                            </Box>
-                            <Box
+                            <HStack
+                              gap="10px"
                               display="flex"
-                              flexDirection="column"
-                              justifyContent="space-between"
-                              alignItems="flex-start"
-                              gap="1px"
-                              pt="3px"
+                              justifyContent="flex-center"
+                              alignItems="center"
                             >
-                              <Text
-                                fontSize="14px"
-                                fontWeight="500"
-                                fontStyle="normal"
-                                fontFamily="Inter"
+                              <Box height="2rem" width="2rem">
+                                <Image
+                                  src={
+                                    category == "0"
+                                      ? market.image
+                                      : category == "1"
+                                      ? market?.item?.thumb
+                                      : category == "2"
+                                      ? market?.thumb
+                                      : "#"
+                                  }
+                                  // src={market.image}
+                                  alt={`Picture of the coin that I want to access ${market.name}`}
+                                  width="32"
+                                  height="32"
+                                />
+                              </Box>
+                              <Box
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="space-between"
+                                alignItems="flex-start"
+                                gap="1px"
+                                pt="3px"
                               >
-                              {category=="0"?market.symbol.toUpperCase():category=="1"?market?.item?.symbol.toUpperCase():category=="2"?market?.symbol:"" }
-
-                              </Text>
-                            </Box>
-                          </HStack>
-                        </Td>
-}
+                                <Text
+                                  fontSize="14px"
+                                  fontWeight="500"
+                                  fontStyle="normal"
+                                  fontFamily="Inter"
+                                >
+                                  {category == "0"
+                                    ? market.symbol.toUpperCase()
+                                    : category == "1"
+                                    ? market?.item?.symbol.toUpperCase()
+                                    : category == "2"
+                                    ? market?.symbol
+                                    : ""}
+                                </Text>
+                              </Box>
+                            </HStack>
+                          </Td>
+                        )}
                         <Td
                           width={"16.6%"}
                           fontSize={"14px"}
@@ -245,6 +269,7 @@ const MarketLogsDashboard = ({
                           padding={2}
                           textAlign="center"
                         >
+                          <VStack>
                           <Text
                             width="100%"
                             height="100%"
@@ -255,11 +280,57 @@ const MarketLogsDashboard = ({
                             fontSize="14px"
                             color="#E6EDF3"
                           >
-                            {category!="1" && "$"} 
-                            {category=="0"?market.current_price:category=="1"?market?.item?.data?.price_btc:category=="2"?market?.floor_price_in_native_currency:market?.data?.total_volume }
-                            {category=="1"?"BTC":category=="2"?market?.native_currency_symbol:""}
+                            {category != "1" && category!="2" && "$ "}
+                            {category == "0"
+                              ?numberFormatter( market.current_price)
+                              : category == "1"
+                              ? (market?.item?.data?.price_btc)
+                              : category == "2"
+                              ? numberFormatter(market?.floor_price_in_native_currency)
+                              : numberFormatter(market?.data?.total_volume)}
+                            {"  "}
+                            {category == "1"
+                              ? "BTC"
+                              : category == "2"
+                              ? market?.native_currency_symbol.toUpperCase()
+                              : ""}
                             {/* {market.current_price} */}
                           </Text>
+                          <HStack>   {category == "0"
+                              ? (market.price_change_24h>=0 ?<TriangleUpIcon color={'green'}/> :<TriangleDownIcon color={'red'}/>)
+                              : category == "1"
+                              ? (market?.item?.data?.price_change_percentage_24h?.usd>=0 ?<TriangleUpIcon color={'green'}/> :<TriangleDownIcon color={'red'}/>) 
+                              : category == "2"
+                              ? (market?.floor_price_24h_percentage_change>=0 ?<TriangleUpIcon color={'green'}/> :<TriangleDownIcon color={'red'}/>) 
+                              : "#E6EDF3"} <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            fontWeight="400"
+                            fontSize="14px"
+                            // color="#E6EDF3"
+                            color=    {category == "0"
+                              ? (market.price_change_24h>=0 ?"green" :"red")
+                              : category == "1"
+                              ? (market?.item?.data?.price_change_percentage_24h?.usd>=0 ?"green" :"red") 
+                              : category == "2"
+                              ? (market?.floor_price_24h_percentage_change>=0 ?"green" :"red") 
+                              : "#E6EDF3"}
+                          >
+                          {category == "0"
+                            ?  numberFormatter( market.price_change_24h)+" %"
+                            : category == "1"
+                            ? numberFormatter(market?.item?.data?.price_change_percentage_24h?.usd) +" %"
+                            : category == "2"
+                            ? numberFormatter(market?.floor_price_24h_percentage_change) +" %"
+                            : ""}
+                          {"  "}
+                         
+                            </Text></HStack>
+                        
+                          </VStack>
                         </Td>
                         <Td
                           width={"16.6%"}
@@ -278,7 +349,15 @@ const MarketLogsDashboard = ({
                             fontSize="14px"
                             color="#E6EDF3"
                           >
-                              {category=="0"?market.market_cap:category=="1"?market?.data?.h24_average_sale_price:category=="2"?market?.item?.name:category=="3"?market?.item?.name:market?.item?.data?.market_cap }
+                            {category == "0"
+                              ? numberFormatter(market.market_cap)
+                              : category == "1"
+                              ? market?.item?.data?.market_cap
+                              : category == "2"
+                              ? market?.data?.h24_average_sale_price
+                              : category == "3"
+                              ? market?.item?.name
+                              : numberFormatter(market?.item?.data?.market_cap)}
 
                             {/* {numberFormatter(market.market_cap)} */}
                           </Text>

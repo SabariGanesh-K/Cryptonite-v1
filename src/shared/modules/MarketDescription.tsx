@@ -27,6 +27,7 @@ import {
   Spinner,
   Skeleton,
   HStack,
+  VStack,
 } from "@chakra-ui/react";
 import {
   selectcoinHistoricData,
@@ -36,20 +37,219 @@ import { useSelector } from "react-redux";
 import useCoinDataLoader from "../hooks/useCoinLoader";
 import numberFormatter from "@/utils/numberFormatter";
 import CoinSocialButton from "../components/coinSocialButton";
-import { InfoIcon } from "@chakra-ui/icons";
+import { InfoIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 
 export default function MarketDescription(coinId: any) {
   const coinInformationData = useSelector(selectCoinInformation);
   const { coinHistoricDataAvailable, available } = useCoinDataLoader(coinId);
   const [coinsData, setcoinsData] = useState<any>({});
   useEffect(() => {
-    console.log(coinId,coinInformationData);
+    console.log(
+      coinId,
+      coinInformationData[coinId.coinId]?.market_data
+        ?.price_change_24h_in_currency?.usd
+    );
     if (coinInformationData[coinId.coinId]) {
       setcoinsData(coinInformationData[coinId.coinId]);
     }
   }, [coinInformationData]);
   return available ? (
     <>
+      <Box
+        mb={"4rem"}
+        width={"100%"}
+        display={"flex"}
+        flexDirection={"row"}
+        justifyContent={"space-evenly"}
+      >
+        <VStack
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={"3px"}
+        >
+          <Text color="#6e7681" fontSize="xl" alignItems="center">
+            Current Price
+          </Text>
+          {coinInformationData[coinId.coinId] == null ? (
+            <Skeleton
+              width="6rem"
+              height="1.9rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            />
+          ) : (
+            <HStack>
+              <Text color="#e6edf3" fontSize="25px">
+                {"$ "}{" "}
+                {numberFormatter(
+                  coinInformationData[coinId.coinId]?.market_data?.current_price
+                    ?.usd
+                )}
+              </Text>
+              <HStack>
+                {coinInformationData[coinId.coinId]?.market_data
+                  ?.price_change_24h_in_currency?.usd >= 0 ? 
+                  <TriangleUpIcon color={"green"} />:   <TriangleDownIcon color={"red"} />}
+          {
+                  <>
+                    {" "}
+                 
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      // color="#E6EDF3"
+                      color={
+                        coinInformationData[coinId.coinId]?.market_data
+                          ?.price_change_24h_in_currency?.usd >= 0
+                          ? "green"
+                          : "red"
+                      }
+                    >
+                      {
+                        coinInformationData[coinId.coinId]?.market_data
+                          ?.price_change_24h_in_currency?.usd
+                      }{" "}
+                      %{" "}
+                    </Text>
+                  </>}
+               
+              </HStack>
+            </HStack>
+          )}
+        </VStack>
+     
+        <VStack
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={"3px"}
+        >
+          <Text color="#6e7681" fontSize="xl" alignItems="center">
+            All Time High
+          </Text>
+          {coinInformationData[coinId.coinId] == null ? (
+            <Skeleton
+              width="6rem"
+              height="1.9rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            />
+          ) : (
+            <HStack>
+              <Text color="#e6edf3" fontSize="25px">
+                {"$ "}{" "}
+                {numberFormatter(
+                  coinInformationData[coinId.coinId]?.market_data?.ath
+                    ?.usd
+                )}
+              </Text>
+              <HStack>
+                {coinInformationData[coinId.coinId]?.market_data
+                  ?.ath_change_percentage?.usd >= 0 ? 
+                  <TriangleUpIcon color={"green"} />:   <TriangleDownIcon color={"red"} />}
+          {
+                  <>
+                    {" "}
+                 
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      // color="#E6EDF3"
+                      color={
+                        coinInformationData[coinId.coinId]?.market_data
+                          ?.ath_change_percentage?.usd >= 0
+                          ? "green"
+                          : "red"
+                      }
+                    >
+                      {
+                        coinInformationData[coinId.coinId]?.market_data
+                          ?.ath_change_percentage?.usd
+                      }{" "}
+                      %{" "}
+                    </Text>
+                  </>}
+               
+              </HStack>
+            </HStack>
+          )}
+        </VStack>
+
+        <VStack
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={"3px"}
+        >
+          <Text color="#6e7681" fontSize="xl" alignItems="center">
+            All Time Low
+          </Text>
+          {coinInformationData[coinId.coinId] == null ? (
+            <Skeleton
+              width="6rem"
+              height="1.9rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            />
+          ) : (
+            <HStack>
+              <Text color="#e6edf3" fontSize="25px">
+                {"$ "}{" "}
+                {numberFormatter(
+                  coinInformationData[coinId.coinId]?.market_data?.atl
+                    ?.usd
+                )}
+              </Text>
+             
+            </HStack>
+          )}
+        </VStack>
+
+        <VStack
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={"3px"}
+        >
+          <Text color="#6e7681" fontSize="xl" alignItems="center">
+            Total Volume
+          </Text>
+          {coinInformationData[coinId.coinId] == null ? (
+            <Skeleton
+              width="6rem"
+              height="1.9rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            />
+          ) : (
+            <HStack>
+              <Text color="#e6edf3" fontSize="25px">
+                {"$ "}{" "}
+                {numberFormatter(
+                  coinInformationData[coinId.coinId]?.market_data?.total_volume
+                    ?.usd
+                )}
+              </Text>
+             
+            </HStack>
+          )}
+        </VStack>
+      </Box>
       <Box
         display={"flex"}
         alignContent={"center"}
@@ -86,7 +286,7 @@ export default function MarketDescription(coinId: any) {
                 hasArrow
                 placement="right"
                 boxShadow="dark-lg"
-                label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                label="."
                 bg="#02010F"
                 fontSize={"13px"}
                 fontWeight={"400"}
@@ -127,26 +327,7 @@ export default function MarketDescription(coinId: any) {
               >
                 Symbol:
               </Text>
-              <Tooltip
-                hasArrow
-                placement="right-end"
-                boxShadow="dark-lg"
-                label="Annual interest rate earned on supplied tokens."
-                bg="#02010F"
-                fontSize={"13px"}
-                fontWeight={"400"}
-                borderRadius={"lg"}
-                padding={"2"}
-                color="#F0F0F5"
-                border="1px solid"
-                borderColor="#23233D"
-                arrowShadowColor="#2B2F35"
-                // arrowPadding={2}
-                maxW="222px"
-                // marginTop={20}
-              >
-                <Box>{/* <InfoIcon /> */}</Box>
-              </Tooltip>
+      
             </Text>
             <Text
               font-style="normal"
@@ -174,26 +355,7 @@ export default function MarketDescription(coinId: any) {
               >
                 Genesis on :
               </Text>
-              <Tooltip
-                hasArrow
-                placement="right-end"
-                boxShadow="dark-lg"
-                label="Annual interest rate earned on supplied tokens."
-                bg="#02010F"
-                fontSize={"13px"}
-                fontWeight={"400"}
-                borderRadius={"lg"}
-                padding={"2"}
-                color="#F0F0F5"
-                border="1px solid"
-                borderColor="#23233D"
-                arrowShadowColor="#2B2F35"
-                // arrowPadding={2}
-                maxW="222px"
-                // marginTop={20}
-              >
-                <Box>{/* <InfoIcon /> */}</Box>
-              </Tooltip>
+          
             </Text>
             <Text
               font-style="normal"
@@ -272,7 +434,7 @@ export default function MarketDescription(coinId: any) {
                 hasArrow
                 placement="right-end"
                 boxShadow="dark-lg"
-                label="Annual interest rate earned on supplied tokens."
+                label="Market capitalization (market cap) to Fully Diluted Valuation (FDV) ratio is a metric that compares a company's market value to its fully diluted valuation, indicating how much the market values the company's future growth potential. "
                 bg="#02010F"
                 fontSize={"13px"}
                 fontWeight={"400"}
@@ -369,6 +531,14 @@ export default function MarketDescription(coinId: any) {
           )}
         </Box>
         {/* </Box> */}
+      </Box>
+
+      <Box width={'80%'}>
+      <Text color="#e6edf3" fontSize="md">
+       What is  { coinInformationData[coinId.coinId]?.name} ?
+      </Text>
+      <Text  color="gray" fontSize="md" dangerouslySetInnerHTML={{ __html: coinInformationData[coinId.coinId]?.description?.en }} />
+
       </Box>
     </>
   ) : (

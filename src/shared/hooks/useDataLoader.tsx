@@ -18,8 +18,10 @@ import {
   setTrendingData,
   setUSDTData,
 } from "@/store/slices/readDataSlice";
+import { useToast } from "@chakra-ui/react";
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
+import { headers } from "next/headers";
 import { useEffect, useState } from "react";
 import { UseSelector, useDispatch, useSelector } from "react-redux";
 // import { AxiosGet } from "../lib/axios";
@@ -40,8 +42,15 @@ const top50data = useSelector(selectTop50Data)
   const ethcompanyholding = useSelector(selectETHcompanyHoldingsData);
 
   const [aprByMarket, setAPRByMarket] = useState(0);
+const apiKey = process.env.NEXT_PUBLIC_COINGECKO_API_KEY;
+const toast = useToast();
 
   // usss
+  const     headers :any= {
+    "accept": "application/json",
+   "x-cg-demo-api-key": apiKey
+}
+
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchTop5Data = async () => {
@@ -52,13 +61,8 @@ const top50data = useSelector(selectTop50Data)
         const url4 = ` https://api.coingecko.com/api/v3/coins/tether/market_chart?vs_currency=usd&days=360`;
         const url5 = ` https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=usd&days=360`;
 
-        // const options = {
-        //   method: "GET",
-        //   headers: {
-        //     accept: "application/json",
-        //     "x-cg-pro-api-key": "CG-S2Rc9ShTYHYtCkzm4WkdKQN7",
-        //   },
-        // };
+  
+     
         if (btcdata == null) {
           if (
             localStorage.getItem("btcData") == null ||
@@ -66,15 +70,14 @@ const top50data = useSelector(selectTop50Data)
               new Date().getTime()
           ) {
             console.log("fetching data");
-            fetch(url1)
+            fetch(url1,headers)
               .then((res) => res.json())
               .then((json) => {
                 console.log(json);
                 const price = json.prices.map((pair: any) => pair[1]);
                 const xAxisCategories = json.prices.map((pair: any) => pair[0]);
 
-                // const prices = json.prices.map((price:any) => ({ x: price[0], y: price[1] }));
-                // btcdata= { name: 'bitcoin', data:  };
+              
 
                 dispatch(
                   setBTCData({
@@ -115,7 +118,7 @@ const top50data = useSelector(selectTop50Data)
             JSON.parse(localStorage.getItem("solData") as any).expire <
               new Date().getTime()
           ) {
-            fetch(url2)
+            fetch(url2,headers)
               .then((res) => res.json())
               .then((json) => {
                 console.log(json);
@@ -152,7 +155,7 @@ const top50data = useSelector(selectTop50Data)
             JSON.parse(localStorage.getItem("bnbData") as any).expire <
               new Date().getTime()
           ) {
-            fetch(url3)
+            fetch(url3,headers)
               .then((res) => res.json())
               .then((json) => {
                 const price = json.prices.map((pair: any) => pair[1]);
@@ -194,7 +197,7 @@ const top50data = useSelector(selectTop50Data)
             JSON.parse(localStorage.getItem("usdtData") as any).expire <
               new Date().getTime()
           ) {
-            fetch(url4)
+            fetch(url4,headers)
               .then((res) => res.json())
               .then((json) => {
                 const price = json.prices.map((pair: any) => pair[1]);
@@ -237,7 +240,7 @@ const top50data = useSelector(selectTop50Data)
             JSON.parse(localStorage.getItem("ethData") as any).expire <
               new Date().getTime()
           ) {
-            fetch(url5)
+            fetch(url5,headers)
               .then((res) => res.json())
               .then((json) => {
                 console.log(json);
@@ -270,10 +273,7 @@ const top50data = useSelector(selectTop50Data)
           }
         }
       } catch (err) {
-        // fetch('https://api.coingecko.com/api/v3/coins/markets?per_page=50&page=1', options)
-        //   .then(response => response.json())
-        //   .then(response => console.log(response))
-        //   .catch(err => console.log(err));
+        
 
         console.log("error fetching top 50 coins:", err);
         setFetchErrorTop50(true);
@@ -287,8 +287,7 @@ const top50data = useSelector(selectTop50Data)
             JSON.parse(localStorage.getItem("Top50Data") as any).expire < new Date().getTime()
           ) {
             console.log("fetching data");
-            fetch(
-              "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50 "
+            fetch(   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50",headers
             )
               .then((res) => res.json())
               .then((json) => {
@@ -311,6 +310,16 @@ const top50data = useSelector(selectTop50Data)
                 console.log("dispatched", json);
   
                 }
+                else{
+                  toast({
+                    title: 'Error',
+                    description: 'Rate limit reached. Try after sometime!',
+                    status: 'error',
+                    duration: 6000, // 6 seconds
+                    isClosable: true,
+                    // onClose: () => dispatch(toggleRateLimitError()),
+                  });
+                }
           
               }).catch((err) => console.error("error:" + err));
           } else {
@@ -324,41 +333,7 @@ const top50data = useSelector(selectTop50Data)
             );
           }
         }
-        // }
-        // //   //  const data= await AxiosGet("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false");
-        // //   // https://pro-api.coingecko.com/api/v3/coins/markets?per_page=50&page=1'
-        // //    const data= await AxiosGet("/coins/markets?per_page=50&page=1");
 
-        // //   console.log(data);
-        // //    setFetchErrorTop50(false);
-        // const apiKey = process.env.NEXT_PUBLIC_COINGECKO_API_KEY; // replace with your actual API key
-
-        // // const options = {
-        // //     method: 'GET',
-        // //     headers: {
-        // //       accept: 'application/json',
-        // //       'x-cg-pro-api-key': apiKey,
-        // //     } as HeadersInit,
-        // //   };
-
-        // const url =
-        //   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50";
-        // const options = {
-        //   method: "GET",
-        //   headers: {
-        //     accept: "application/json",
-        //     "x-cg-pro-api-key": "CG-S2Rc9ShTYHYtCkzm4WkdKQN7",
-        //   },
-        // };
-
-        // fetch(url)
-        //   .then((res) => res.json())
-        //   .then((json) => console.log(json))
-        //   .catch((err) => console.error("error:" + err));
-        // // fetch('https://api.coingecko.com/api/v3/coins/markets?per_page=50&page=1', options)
-        // //   .then(response => response.json())
-        // //   .then(response => console.log(response))
-        // //   .catch(err => console.log(err));
       } catch (err) {
         console.log("error fetching top 50 coins:", err);
         setFetchErrorTop50(true);
@@ -397,6 +372,16 @@ const top50data = useSelector(selectTop50Data)
               console.log("adding to cache")
               console.log("dispatched", json);
 
+              }
+              else{
+                toast({
+                  title: 'Error',
+                  description: 'Rate limit reached. Try after sometime!',
+                  status: 'error',
+                  duration: 6000, // 6 seconds
+                  isClosable: true,
+                  // onClose: () => dispatch(toggleRateLimitError()),
+                });
               }
         
             }).catch((err) => console.error("error:" + err));
@@ -440,6 +425,16 @@ const top50data = useSelector(selectTop50Data)
               );
               console.log("dispatched", json);
 
+            }
+            else{
+              toast({
+                title: 'Error',
+                description: 'Rate limit reached. Try after sometime!',
+                status: 'error',
+                duration: 6000, // 6 seconds
+                isClosable: true,
+                // onClose: () => dispatch(toggleRateLimitError()),
+              });
             }
             }).catch((err) => console.error("error:" + err));;
         } else {
@@ -491,6 +486,16 @@ const top50data = useSelector(selectTop50Data)
               console.log("adding to cache")
               console.log("dispatched", json);
 
+              }
+              else{
+                toast({
+                  title: 'Error',
+                  description: 'Rate limit reached. Try after sometime!',
+                  status: 'error',
+                  duration: 6000, // 6 seconds
+                  isClosable: true,
+                  // onClose: () => dispatch(toggleRateLimitError()),
+                });
               }
         
             }).catch((err) => console.error("error:" + err));

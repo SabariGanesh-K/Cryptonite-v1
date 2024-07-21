@@ -29,7 +29,6 @@ import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
-import { setCoinSelectedExchangeRateRToken } from "@/store/slices/userAccountSlice";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import ArrowUp from "@/assets/icons/arrowup";
 import Image from "next/image";
@@ -205,7 +204,6 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
               flexDirection="column"
               alignItems="flex-start"
               height="72px"
-              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               color="#E6EDF3"
               // padding="24px 24px 16px"
               px="24px"
@@ -222,7 +220,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
                 justifyContent="space-between"
                 my="auto"
               >
-                <Box mt="auto">APR by market:</Box>
+                <Box mt="auto">Explore Top Markets</Box>
                 <Box display="flex" gap="2">
                   <Button
                     color="#3E415C"

@@ -1,6 +1,6 @@
 'use client'
 // app/layout.tsx
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ToastProvider } from "@chakra-ui/react";
 import { Provider } from "react-redux";
 import {store} from '../store/store'
 import { Metadata } from 'next';
@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang='en'>
       <body>
         <ChakraProvider>
+          <ToastProvider/>
         <Provider store={store}>
           {children}
           </Provider></ChakraProvider>

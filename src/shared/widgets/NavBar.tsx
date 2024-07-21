@@ -12,18 +12,13 @@ import {
   Text,
   useOutsideClick,
 } from "@chakra-ui/react";
+import { TbCoinBitcoin } from "react-icons/tb";
+import { GiSpadeSkull } from "react-icons/gi";
 
 
 4
 const Navbar = ({ validRTokens }: any) => {
-//   const dispatch = useDispatch();
 
-
-//   const [dashboardHover, setDashboardHover] = useState(false);
-//   const [campaignHover, setCampaignHover] = useState(false);
-//   const [contibutionHover, setContibutionHover] = useState(false);
-//   const [transferDepositHover, setTransferDepositHover] = useState(false);
-//   const [stakeHover, setStakeHover] = useState(false);
 
   const [justifyContent, setJustifyContent] = useState("flex-start");
   const [toggleDarkMode, setToggleDarkMode] = useState(true);
@@ -33,22 +28,7 @@ const Navbar = ({ validRTokens }: any) => {
     );
   };
 
-  
 
-
-
-  
-  // useEffect(() => {
-  //   if(address && address!=accountAddress)
-  //   {
-
-  //   }
-  // }, [address]);
-
-
-
-
-const [Render, setRender] = useState(true);
 
   
   return (
@@ -91,7 +71,8 @@ const [Render, setRender] = useState(true);
               height="32"
               width="140"
             /> */}
-            Heloo
+            <GiSpadeSkull color="#433CC8" size={'50px'} />
+          <Text size={'xl'} fontWeight={600}>CryptoNite</Text>  
           </Box>
         </Link>
 

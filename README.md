@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+ <H1>**CRYPTONITE - V1**</H1> 
 
-## Getting Started
+A comprehensive Crypto tracker Application. Track top trending assets in one place.
 
-First, run the development server:
 
-```bash
+
+⚠️ You might recieve "Rate Limit Error" frequently due to usage and Demo API restriction 
+
+## Installation Instruction
+- Setup env by adding 2 API Keys to access Coingecko [Demo API Key]. If using Pro key , kindly modify urls in hooks appropriately.
+  
+```code
+
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
+- Comprehensive Data availability including Top global market cap , Top Coins with Highest Market Caps , Trending Coins , Hot NFTs , Most searched categories data for enhanced investment , Top companies holding BITCOIN and ETHEREUM as Investment
+- Caching of data and thus optimizing API calls and enhancing UX by smoothening load times on frequent visits
+- Consistent and Product Driven Design around the app to maintaain professional and standard UI practises
+- Redux state management for handling excessive high frequency datas without compromising on performance or errors
+- Skeleton driven unit data flow that prevents single point of failure
+- Realtime Datas and advanced graph that can be zoomed in for clear analysis
+- Formatted numbers for error free and normalized display of data
+- Rate limit handler to prevent spam abuse and also to control the behaviour of application
+- Internet connection tracker to detect unstable connections in the footer that communicates promptness of the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Snaps
+![image](https://github.com/user-attachments/assets/1721aa93-c989-4337-9e1d-93aeb61e3417)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![image](https://github.com/user-attachments/assets/2b1eaf4b-59c1-41ce-9176-e90b09ed78c2)
 
-## Learn More
+![image](https://github.com/user-attachments/assets/e15cb4c2-aa17-4944-b84c-cf2a8e01e1a7)
 
-To learn more about Next.js, take a look at the following resources:
+![image](https://github.com/user-attachments/assets/e5d36f1e-ec06-4b7b-91c5-b1da013b5321)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![image](https://github.com/user-attachments/assets/fbd0d681-1e43-45aa-8c7e-ce577141c51b)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![image](https://github.com/user-attachments/assets/da1a8441-2cb7-4f8e-b265-831569e7b828)
 
-## Deploy on Vercel
+![image](https://github.com/user-attachments/assets/3b3e7772-60c6-41e0-be52-0b26f39d4c51)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![image](https://github.com/user-attachments/assets/13673f75-21bd-43ac-bca2-1714397db0a2)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![image](https://github.com/user-attachments/assets/6be926f3-a038-449e-97f2-f94fbdb0810c)
+
+![image](https://github.com/user-attachments/assets/bdd0dfd0-83d2-48b8-9d65-0a99f3b0b0ec)
+
+![image](https://github.com/user-attachments/assets/955bfa2d-8e0d-439d-966b-eae97577ad38)
+
+
+
+
+
+
+
+  

@@ -20,7 +20,7 @@ const useCoinDataLoader = (coinId: string) => {
 
   const coinMarketData = useSelector(selectcoinHistoricData);
   const coinInformationData = useSelector(selectCoinInformation);
-  const apiKey2 = process.env.NEXT_PUBLIC_COINGECKO_API_KEY_2;
+  const apiKey2 = process.env.NEXT_PUBLIC_COINGECKO_API_KEY;
   const headers2: any = {
     accept: "application/json",
     "x-cg-demo-api-key": apiKey2,

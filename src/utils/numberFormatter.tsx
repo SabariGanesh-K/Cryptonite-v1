@@ -1,4 +1,5 @@
-const numberFormatter = (input: any) => {
+const numberFormatter = (input: any,mod=false) => {
+  console.log(mod)
   if (input === null) return "";
   var number = parseFloat(input);
 
@@ -43,7 +44,8 @@ const numberFormatter = (input: any) => {
           Math.max(4 - Math.floor(Math.max(1, Math.log10(number) + 1)), 0)
         );
   // .replace(/\.?0+$/, ""); // Remove trailing zeros and decimal point if unnecessary
-  return formattedNumber + suffixes[magnitude];
+  if(mod==false) return formattedNumber + suffixes[magnitude];
+  return formattedNumber.substring(1)+ suffixes[magnitude]
 };
 ////console.log("hey");
 ////console.log(formatNumber(2028222220.2222));

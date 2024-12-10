@@ -29,8 +29,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     <>
       <Box
         background={`
-            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
-            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+           
             black
           `}
         position={"fixed"}
@@ -63,8 +62,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         <>
           <Box
             background={`
-            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
-            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+           
             black
           `}
             position={"fixed"}
@@ -82,8 +80,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             minHeight={"100vh"}
             pt="8rem"
             background={`
-            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
-            radial-gradient(circle 1300px at bottom right, rgba(115, 49, 234, 0.15), transparent) bottom right,
+
             black
           `}
             pb={isLargerThan1280 ? "7rem" : "0rem"}

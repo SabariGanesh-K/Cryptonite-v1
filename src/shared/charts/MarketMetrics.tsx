@@ -12,14 +12,14 @@ import {
   selectETHData,
   selectSolanaData,
   selectUSDTData,
-
 } from "@/store/slices/readDataSlice";
-
 
 import MarketListTracker from "../modules/MarketListTracker";
 import { VscGraphLine } from "react-icons/vsc";
 import { HiTrendingUp } from "react-icons/hi";
 import { FaFire, FaSearch } from "react-icons/fa";
+import formatCommaNumber from "@/utils/numberDisplayer";
+import { MdCurrencyBitcoin } from "react-icons/md";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const MarketMetrics = ({ router, color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState<number>(0);
@@ -32,27 +32,36 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
 
   const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
   const [currentSelectedTab, setcurrentSelectedTab] = useState<number>(0);
-  console.log(btcdata?.data, "btc")
+  console.log(btcdata?.data, "btc");
   const splineChartData = {
-    series:(btcdata == null ||
-    ethdata == null ||
-    usdtddata == null ||
-    bnbdata == null ||
-    soldata == null )? [{name:"hehe",data:[0,1]}]:(aprByMarket==0? [
-      { name: "Bitcoin", data: btcdata?.data },
-      { name: "Ethereum", data: ethdata?.data },
-      { name: "Solana", data: soldata?.data },
-      { name: "Binance Coin", data: bnbdata?.data },
-      { name: "USDT", data: usdtddata?.data },
-    ]:aprByMarket==1? [
-      { name: "Bitcoin", data: btcdata?.data }]:aprByMarket==2? [
-        { name: "Ethereum", data: ethdata?.data }]:aprByMarket==3? [
-          { name: "Solana", data: soldata?.data }]:aprByMarket==4? [
-            { name: "Binance Coin", data: bnbdata?.data }]:aprByMarket==5? [
-              { name: "USDT", data: usdtddata?.data }]:[]),
+    series:
+      btcdata == null ||
+      ethdata == null ||
+      usdtddata == null ||
+      bnbdata == null ||
+      soldata == null
+        ? [{ name: "hehe", data: [0, 1] }]
+        : aprByMarket == 0
+        ? [
+            { name: "Bitcoin", data: btcdata?.data },
+            { name: "Ethereum", data: ethdata?.data },
+            { name: "Solana", data: soldata?.data },
+            { name: "Binance Coin", data: bnbdata?.data },
+            { name: "USDT", data: usdtddata?.data },
+          ]
+        : aprByMarket == 1
+        ? [{ name: "Bitcoin", data: btcdata?.data }]
+        : aprByMarket == 2
+        ? [{ name: "Ethereum", data: ethdata?.data }]
+        : aprByMarket == 3
+        ? [{ name: "Solana", data: soldata?.data }]
+        : aprByMarket == 4
+        ? [{ name: "Binance Coin", data: bnbdata?.data }]
+        : aprByMarket == 5
+        ? [{ name: "USDT", data: usdtddata?.data }]
+        : [],
     options: {
       chart: {
-       
         toolbar: {
           show: false,
         },
@@ -67,7 +76,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return val?val:""; // Display the data value as the label
+          return val ? val : ""; // Display the data value as the label
         },
       },
       xaxis: {
@@ -75,7 +84,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
-            fontSize: "12px",
+            fontSize: "2xl",
             fontWeight: "400",
           },
         },
@@ -90,11 +99,11 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value?value:"";
+            return value ? formatCommaNumber(value) : "";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
-            fontSize: "12px",
+            fontSize: "2xl",
             fontWeight: "400",
           },
         },
@@ -112,7 +121,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
       stroke: {
         curve: "smooth",
         color: splineColor,
-        opacity: 1,
+        width: 1,
       },
       grid: {
         borderColor: "#2B2F35",
@@ -127,7 +136,6 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
       ...splineChartData.options.stroke,
       curve: "smooth",
     },
-
   };
 
   return (
@@ -136,7 +144,6 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="6px"
         padding="16px 24px 40px"
-      
       >
         {btcdata?.data == null ||
         ethdata?.data == null ||
@@ -168,7 +175,9 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
                 justifyContent="space-between"
                 my="auto"
               >
-                <Box mt="auto">Explore Top Markets</Box>
+                <Box mt="auto">
+                  <Text fontSize={"4xl"}>Explore Top Markets</Text>
+                </Box>
                 <Box display="flex" gap="2">
                   <Button
                     color="#3E415C"
@@ -265,28 +274,30 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
               </Box>
             </Box>{" "}
             <ApexCharts
-            width={'100%'}
+              width={"100%"}
               options={options}
               series={splineChartData.series}
               type="line"
               height={500}
-              
             />
           </>
         )}
-        <Box   display="flex" gap="4" mb="1.4rem" mt="3rem">
+        <Box display="flex" gap="4" mb="1.4rem" mt="3rem">
           <Box
             display="flex"
             gap="2"
             bg={
-              currentSelectedTab === 0
-                ? "rgba(103, 109, 154, 0.10)"
-                : "transparent"
+              // currentSelectedTab == 1
+              //   ? "rgba(103, 109, 154, 0.10)"
+                // : 
+                "transparent"
             }
-            borderRadius="xl"
-            border="1px"
+            // borderRadius="xl"
+            borderBottom={
+              currentSelectedTab === 0 ? "2px" : ""
+            }
             borderColor={
-              currentSelectedTab === 0 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+              currentSelectedTab === 0 ? "white" : ""
             }
             // p="1"
             onClick={() => setcurrentSelectedTab(0)}
@@ -295,15 +306,15 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
           >
             <Box>
               {currentSelectedTab === 0 ? (
-                <VscGraphLine color="green" size={"25px"} />
+                <MdCurrencyBitcoin color="green" size={"25px"} />
               ) : (
-                <VscGraphLine color="green" size={"25px"} />
+                <MdCurrencyBitcoin color="green" size={"25px"} />
               )}
             </Box>
             <Text
               my="auto"
               color="white"
-              fontSize="12px"
+              fontSize="lg"
               fontWeight="500"
               textColor={currentSelectedTab === 0 ? "white" : "#3E415C"}
             >
@@ -314,19 +325,21 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
             display="flex"
             gap="2"
             bg={
-              currentSelectedTab == 1
-                ? "rgba(103, 109, 154, 0.10)"
-                : "transparent"
+              // currentSelectedTab == 1
+              //   ? "rgba(103, 109, 154, 0.10)"
+                // : 
+                "transparent"
             }
-            borderRadius="xl"
-            border="1px"
+            // borderRadius="xl"
+            borderBottom={
+              currentSelectedTab === 1 ? "2px" : ""
+            }
             borderColor={
-              currentSelectedTab === 1 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+              currentSelectedTab === 1 ? "white" : ""
             }
-            // p="1"
+            p="1"
             onClick={() => setcurrentSelectedTab(1)}
             cursor="pointer"
-            p="2"
           >
             <Box>
               {currentSelectedTab === 1 ? (
@@ -338,7 +351,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="12px"
+              fontSize="lg"
               fontWeight="500"
               textColor={currentSelectedTab === 1 ? "white" : "#3E415C"}
             >
@@ -350,14 +363,17 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
             display="flex"
             gap="2"
             bg={
-              currentSelectedTab === 2
-                ? "rgba(103, 109, 154, 0.10)"
-                : "transparent"
+              // currentSelectedTab == 1
+              //   ? "rgba(103, 109, 154, 0.10)"
+                // : 
+                "transparent"
             }
-            borderRadius="xl"
-            border="1px"
+            // borderRadius="xl"
+            borderBottom={
+              currentSelectedTab === 2 ? "2px" : ""
+            }
             borderColor={
-              currentSelectedTab === 2 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+              currentSelectedTab === 2 ? "white" : ""
             }
             // p="1"
             onClick={() => setcurrentSelectedTab(2)}
@@ -374,7 +390,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="12px"
+              fontSize="lg"
               fontWeight="500"
               textColor={currentSelectedTab === 2 ? "white" : "#3E415C"}
             >
@@ -385,19 +401,22 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
             display="flex"
             gap="2"
             bg={
-              currentSelectedTab === 3
-                ? "rgba(103, 109, 154, 0.10)"
-                : "transparent"
+              // currentSelectedTab == 1
+              //   ? "rgba(103, 109, 154, 0.10)"
+                // : 
+                "transparent"
             }
-            borderRadius="xl"
-            border="1px"
+            // borderRadius="xl"
+            borderBottom={
+              currentSelectedTab === 3 ? "2px" : ""
+            }
             borderColor={
-              currentSelectedTab === 3 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"
+              currentSelectedTab === 3 ? "white" : ""
             }
             // p="1"
             onClick={() => setcurrentSelectedTab(3)}
             cursor="pointer"
-            p="2"
+            p="3"
           >
             <Box>
               {currentSelectedTab === 3 ? (
@@ -409,7 +428,7 @@ const MarketMetrics = ({ router, color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="12px"
+              fontSize="lg"
               fontWeight="500"
               textColor={currentSelectedTab === 3 ? "white" : "#3E415C"}
             >

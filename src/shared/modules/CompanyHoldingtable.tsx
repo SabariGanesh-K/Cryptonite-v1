@@ -144,7 +144,7 @@ const routerr = useRouter();
                       overflowWrap="break-word"
                       width={"100%"}
                       height={"2rem"}
-                      fontSize="12px"
+                      fontSize="md"
                       textAlign={
                         idx1 <= 1
                           ? "left"
@@ -227,7 +227,7 @@ const routerr = useRouter();
                         <Td
                           width={"6.9%"}
                           maxWidth={"3rem"}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           overflow={"hidden"}
                           textAlign={"center"}
@@ -243,7 +243,7 @@ const routerr = useRouter();
                           >
                             {/* {checkGap(idx1, idx2)} */}
                             <Text
-                              fontSize="14px"
+                              fontSize="md"
                               fontWeight="500"
                               fontStyle="normal"
                               fontFamily="Inter"
@@ -256,7 +256,7 @@ const routerr = useRouter();
                         <Td
                           width={"12.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           padding={2}
                           textAlign="center"
@@ -270,7 +270,7 @@ const routerr = useRouter();
                           >
                        
                               <Text
-                                fontSize="14px"
+                                fontSize="md"
                                 fontWeight="500"
                                 fontStyle="normal"
                                 fontFamily="Inter"
@@ -282,7 +282,7 @@ const routerr = useRouter();
                         <Td
                           width={"12.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           padding={2}
                           textAlign="center"
@@ -296,7 +296,7 @@ const routerr = useRouter();
                           >
                        
                               <Text
-                                fontSize="14px"
+                                fontSize="md"
                                 fontWeight="500"
                                 fontStyle="normal"
                                 fontFamily="Inter"
@@ -308,7 +308,7 @@ const routerr = useRouter();
                         <Td
                           width={"12.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           padding={2}
                           textAlign="center"
@@ -322,7 +322,7 @@ const routerr = useRouter();
                           >
                        
                               <Text
-                                fontSize="14px"
+                                fontSize="md"
                                 fontWeight="500"
                                 fontStyle="normal"
                                 fontFamily="Inter"
@@ -334,7 +334,7 @@ const routerr = useRouter();
                         <Td
                           width={"12.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           padding={2}
                           textAlign="center"
@@ -346,7 +346,7 @@ const routerr = useRouter();
                             alignItems="center"
                             justifyContent="center"
                             fontWeight="400"
-                            fontSize="14px"
+                            fontSize="md"
                             color="#E6EDF3"
                             // bgColor={"blue"}
                           >
@@ -357,7 +357,7 @@ const routerr = useRouter();
                         <Td
                           width={"12.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           padding={2}
                           textAlign="center"
@@ -369,7 +369,7 @@ const routerr = useRouter();
                             alignItems="center"
                             justifyContent="center"
                             fontWeight="400"
-                            fontSize="14px"
+                            fontSize="md"
                             color="#E6EDF3"
                             // bgColor={"blue"}
                           >
@@ -380,7 +380,7 @@ const routerr = useRouter();
                         <Td
                           width={"12.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           padding={2}
                           textAlign="center"
@@ -392,7 +392,7 @@ const routerr = useRouter();
                             alignItems="center"
                             justifyContent="center"
                             fontWeight="400"
-                            fontSize="14px"
+                            fontSize="md"
                             color="#E6EDF3"
                             // bgColor={"blue"}
                           >
@@ -402,7 +402,7 @@ const routerr = useRouter();
                         <Td
                           width={"12.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
+                          fontSize="md"
                           fontWeight={400}
                           padding={2}
                           textAlign="center"
@@ -414,7 +414,7 @@ const routerr = useRouter();
                             alignItems="center"
                             justifyContent="center"
                             fontWeight="400"
-                            fontSize="14px"
+                            fontSize="md"
                             color="#E6EDF3"
                             // bgColor={"blue"}
                           >
@@ -445,7 +445,7 @@ const routerr = useRouter();
         ) : (
           <Box display="flex" justifyContent="center" alignItems="center">
             <Text
-              fontSize="14px"
+              fontSize="md"
               fontStyle="normal"
               fontWeight="400"
               lineHeight="20px"

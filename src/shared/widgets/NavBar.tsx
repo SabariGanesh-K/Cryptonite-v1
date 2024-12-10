@@ -72,7 +72,7 @@ const Navbar = ({ validRTokens }: any) => {
               width="140"
             /> */}
             <GiSpadeSkull color="#433CC8" size={'50px'} />
-          <Text size={'xl'} fontWeight={600}>CryptoNite</Text>  
+          {/* <Text size={'xl'} fontWeight={600}>CryptoNite</Text>   */}
           </Box>
         </Link>
 

@@ -103,12 +103,12 @@ const MarketLogsDashboard = ({
                     p={0}
                   >
                     <Text
-                      fontFamily={"Inter"}
+                      fontFamily={"sans-serif"}
                       whiteSpace="pre-wrap"
                       overflowWrap="break-word"
                       width={"100%"}
                       height={"2rem"}
-                      fontSize="12px"
+                      fontSize="lg"
                       textAlign={
                         idx1 <= 1
                           ? "left"
@@ -186,10 +186,10 @@ const MarketLogsDashboard = ({
                             fontWeight="400"
                           >
                             <Text
-                              fontSize="14px"
-                              fontWeight="500"
-                              fontStyle="normal"
-                              fontFamily="Inter"
+                              fontSize="lg"
+                              fontWeight="400"
+                              // fontStyle="normal"
+                              fontFamily="sans-serif"
                             >
                               {category == "0"
                                 ? market.name
@@ -248,7 +248,7 @@ const MarketLogsDashboard = ({
                                   fontSize="14px"
                                   fontWeight="500"
                                   fontStyle="normal"
-                                  fontFamily="Inter"
+                                  fontFamily="sans-serif"
                                 >
                                   {category == "0"
                                     ? market.symbol.toUpperCase()
@@ -277,7 +277,7 @@ const MarketLogsDashboard = ({
                             alignItems="center"
                             justifyContent="center"
                             fontWeight="400"
-                            fontSize="14px"
+                            fontSize="lg"
                             color="#E6EDF3"
                           >
                             {category != "1" && category!="2" && "$ "}
@@ -309,7 +309,7 @@ const MarketLogsDashboard = ({
                             alignItems="center"
                             justifyContent="center"
                             fontWeight="400"
-                            fontSize="14px"
+                       fontSize="md"
                             // color="#E6EDF3"
                             color=    {category == "0"
                               ? (market.price_change_24h>=0 ?"green" :"red")
@@ -320,11 +320,11 @@ const MarketLogsDashboard = ({
                               : "#E6EDF3"}
                           >
                           {category == "0"
-                            ?  numberFormatter( market.price_change_24h)+" %"
+                            ?  numberFormatter( market.price_change_24h,true)+" %"
                             : category == "1"
-                            ? numberFormatter(market?.item?.data?.price_change_percentage_24h?.usd) +" %"
+                            ? numberFormatter(market?.item?.data?.price_change_percentage_24h?.usd,true) +" %"
                             : category == "2"
-                            ? numberFormatter(market?.floor_price_24h_percentage_change) +" %"
+                            ? numberFormatter(market?.floor_price_24h_percentage_change,true) +" %"
                             : ""}
                           {"  "}
                          
@@ -346,7 +346,7 @@ const MarketLogsDashboard = ({
                             alignItems="center"
                             justifyContent="center"
                             fontWeight="400"
-                            fontSize="14px"
+                            fontSize="lg"
                             color="#E6EDF3"
                           >
                             {category == "0"
